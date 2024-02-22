@@ -3,6 +3,8 @@ import unit_data as ud
 import canvas_entities as ce
 import selected_entities as se
 import win32api as win32api
+import player as player
+import laser_shot as ls
 import dan_math as dm
 import math as math
 
@@ -42,7 +44,7 @@ class TkWindow():
         self.main_window.geometry(self.main_window_dimensions_geometry_formatted)
         self.main_window.title(self.main_window_title_text)
         #init_frame
-        self.display_frame = tk.Frame(self.main_window, width=self.main_window_width - self.display_frame_main_window_offset, height=self.main_window_height - self.display_frame_main_window_offset)
+        self.display_frame = tk.Frame(self.main_window, width=self.main_window_width - self.display_frame_main_window_offset*2, height=self.main_window_height - self.display_frame_main_window_offset*2)
         self.display_frame.place(x=self.display_frame_main_window_offset, y=self.display_frame_main_window_offset)
         self.display_frame_aabb: ud.AABB = ud.AABB(0, 0, self.display_frame.winfo_reqwidth(), self.display_frame.winfo_reqheight())
         #init_canvas
@@ -50,15 +52,23 @@ class TkWindow():
         self.canvas.place(x=self.canvas_x_placement,y=self.canvas_y_placement)
         self.canvas_aabb: ud.AABB = ud.AABB(0, 0, self.canvas.winfo_reqwidth(), self.canvas.winfo_reqheight())
 
-        self.player_entity: ce.Entity = ce.Entity(ud.Vec2d(50.0, 50.0), 1)
-        self.game_entity_one: ce.Entity = ce.Entity(ud.Vec2d(100.0, 100.0), 2)
-        self.game_entity_two: ce.Entity = ce.Entity(ud.Vec2d(200.0, 200.0), 3)
-        self.game_entity_three: ce.Entity = ce.Entity(ud.Vec2d(300.0, 300.0), 4)
-        self.game_entity_four: ce.Entity = ce.Entity(ud.Vec2d(400.0, 400.0), 5)
-        self.game_entity_five: ce.Entity = ce.Entity(ud.Vec2d(200.0, 100.0), 6)
+        self.laser_shots: list = []
+
+        self.player_entity: ce.Entity = ce.Entity(ud.Vec2d(50.0, 50.0), 1, 0, self.laser_shots)
+        self.game_entity_one: ce.Entity = ce.Entity(ud.Vec2d(100.0, 100.0), 2, 0, self.laser_shots)
+        self.game_entity_two: ce.Entity = ce.Entity(ud.Vec2d(200.0, 200.0), 3, 0, self.laser_shots)
+        self.game_entity_three: ce.Entity = ce.Entity(ud.Vec2d(300.0, 300.0), 4, 0, self.laser_shots)
+        self.game_entity_four: ce.Entity = ce.Entity(ud.Vec2d(400.0, 400.0), 5, 0, self.laser_shots)
+        self.game_entity_five: ce.Entity = ce.Entity(ud.Vec2d(200.0, 100.0), 6, 0, self.laser_shots)
+
+        self.enemy_entity_one: ce.Entity = ce.Entity(ud.Vec2d(100.0, 400.0), 7, 1, self.laser_shots)
+        self.enemy_entity_two: ce.Entity = ce.Entity(ud.Vec2d(400.0, 100.0), 8, 1, self.laser_shots)
+        self.enemy_entity_three: ce.Entity = ce.Entity(ud.Vec2d(400.0, 150), 9, 1, self.laser_shots)
+        self.enemy_entity_four: ce.Entity = ce.Entity(ud.Vec2d(100.0, 450), 10, 1, self.laser_shots)
+        self.enemy_entity_five: ce.Entity = ce.Entity(ud.Vec2d(150.0, 370), 11, 1, self.laser_shots)
 
         #inits w/ player_entity and game_entity_one, game_entity_two
-        self.all_entities: list = [self.player_entity, self.game_entity_one, self.game_entity_two, self.game_entity_three, self.game_entity_four]
+        self.all_entities: list = [self.player_entity, self.game_entity_one, self.game_entity_two, self.game_entity_three, self.game_entity_four, self.game_entity_five, self.enemy_entity_one, self.enemy_entity_two, self.enemy_entity_three, self.enemy_entity_four, self.enemy_entity_five]
 
         #default-target_vec_value
         self.target_vec: ud.Vec2d = ud.Vec2d(100.0, 100.0)
@@ -78,6 +88,14 @@ class TkWindow():
         self.motion_selection_aabb: ud.AABB = ud.AABB(0,0,0,0)
 
         self.mouse_border_monitoring: bool = False
+
+        self.display_screen_canvas_scroll_speed: int = 5
+
+        self.track_entity_attack_ranges_enabled: bool = False
+
+
+
+        self.player = player.Player(0,0)
 
         for entity in self.all_entities:
             self.display_entity(entity)
@@ -166,10 +184,11 @@ class TkWindow():
         self.main_window.bind('<Button-1>', lambda event: self.set_unit_selector_origin())
         self.main_window.bind('<ButtonRelease-1>', lambda event: self.button_release_checks())
         self.main_window.bind('l', lambda event: self.lock_cursor_to_frame())
-        self.main_window.bind('<Up>', lambda event: self.move_display_frame_up())
-        self.main_window.bind('<Left>', lambda event: self.move_display_frame_left())
-        self.main_window.bind('<Right>', lambda event: self.move_display_frame_right())
-        self.main_window.bind('<Down>', lambda event: self.move_display_frame_down())
+        self.main_window.bind('t', lambda event: self.enable_track_entity_attack_ranges())
+        #self.main_window.bind('<Up>', lambda event: self.move_display_frame_up())
+        #self.main_window.bind('<Left>', lambda event: self.move_display_frame_left())
+        #self.main_window.bind('<Right>', lambda event: self.move_display_frame_right())
+        #self.main_window.bind('<Down>', lambda event: self.move_display_frame_down())
 
     def track_mouse_location(self):
         #new_VALS
@@ -247,10 +266,15 @@ class TkWindow():
         self.selected_entities.remove_all_selected_entities()
         for entity in self.all_entities:
             if self.motion_selection_aabb.check_aabb_in_aabb(entity.aabb):
-                self.selected_entities.add_to_selected_entities(entity)
+                if self.player.team_id == entity.team_id:
+                    self.selected_entities.add_to_selected_entities(entity)
+
+    def enable_track_entity_attack_ranges(self):
+        self.track_entity_attack_ranges_enabled: bool = True
 
     def update_canvas_frame_placement(self):
         self.canvas.place(x=self.canvas_x_placement,y=self.canvas_y_placement)
+
     #CLEANTHISUPUPONREFACTOR
     def lock_cursor_to_frame(self):
         if self.mouse_border_monitoring == True:
@@ -267,27 +291,29 @@ class TkWindow():
         new_windows_y = y + self.display_frame_main_window_offset + self.main_window_y_location_SCREEN
         return (new_windows_x, new_windows_y)
 
+    #intotal-restricts-mouse-to-display-frame-and-scrolls-display-frame-dependent-on-scroll-speed
     def restrict_mouse_within_display_area(self):
         if self.mouse_border_monitoring:
             if self.display_frame_aabb.check_xy_in_aabb(self.display_frame_mouse_location_point[0], self.display_frame_mouse_location_point[1]):
                 print("INSIDE_FRAME")
                 if self.display_frame_aabb.check_xy_on_border(self.display_frame_mouse_location_point[0], self.display_frame_mouse_location_point[1]):
-                    if self.display_frame_aabb.check_xy_on_which_border(self.display_frame_mouse_location_point[0], self.display_frame_mouse_location_point[1]) == "up":
-                        self.move_display_frame_up()
-                    elif self.display_frame_aabb.check_xy_on_which_border(self.display_frame_mouse_location_point[0], self.display_frame_mouse_location_point[1]) == "upright":
-                        self.move_display_frame_up_right()
-                    elif self.display_frame_aabb.check_xy_on_which_border(self.display_frame_mouse_location_point[0], self.display_frame_mouse_location_point[1]) == "right":
-                        self.move_display_frame_right()
-                    elif self.display_frame_aabb.check_xy_on_which_border(self.display_frame_mouse_location_point[0], self.display_frame_mouse_location_point[1]) == "downright":
-                        self.move_display_frame_down_right()
-                    elif self.display_frame_aabb.check_xy_on_which_border(self.display_frame_mouse_location_point[0], self.display_frame_mouse_location_point[1]) == "down":
-                        self.move_display_frame_down()
-                    elif self.display_frame_aabb.check_xy_on_which_border(self.display_frame_mouse_location_point[0], self.display_frame_mouse_location_point[1]) == "downleft":
-                        self.move_display_frame_down_left()
-                    elif self.display_frame_aabb.check_xy_on_which_border(self.display_frame_mouse_location_point[0], self.display_frame_mouse_location_point[1]) == "left":
-                        self.move_display_frame_left()
-                    elif self.display_frame_aabb.check_xy_on_which_border(self.display_frame_mouse_location_point[0], self.display_frame_mouse_location_point[1]) == "upleft":
-                        self.move_display_frame_up_left()
+                    for speed in range(self.display_screen_canvas_scroll_speed):
+                        if self.display_frame_aabb.check_xy_on_which_border(self.display_frame_mouse_location_point[0], self.display_frame_mouse_location_point[1]) == "up":
+                            self.move_display_frame_up()
+                        elif self.display_frame_aabb.check_xy_on_which_border(self.display_frame_mouse_location_point[0], self.display_frame_mouse_location_point[1]) == "upright":
+                            self.move_display_frame_up_right()
+                        elif self.display_frame_aabb.check_xy_on_which_border(self.display_frame_mouse_location_point[0], self.display_frame_mouse_location_point[1]) == "right":
+                            self.move_display_frame_right()
+                        elif self.display_frame_aabb.check_xy_on_which_border(self.display_frame_mouse_location_point[0], self.display_frame_mouse_location_point[1]) == "downright":
+                            self.move_display_frame_down_right()
+                        elif self.display_frame_aabb.check_xy_on_which_border(self.display_frame_mouse_location_point[0], self.display_frame_mouse_location_point[1]) == "down":
+                            self.move_display_frame_down()
+                        elif self.display_frame_aabb.check_xy_on_which_border(self.display_frame_mouse_location_point[0], self.display_frame_mouse_location_point[1]) == "downleft":
+                            self.move_display_frame_down_left()
+                        elif self.display_frame_aabb.check_xy_on_which_border(self.display_frame_mouse_location_point[0], self.display_frame_mouse_location_point[1]) == "left":
+                            self.move_display_frame_left()
+                        elif self.display_frame_aabb.check_xy_on_which_border(self.display_frame_mouse_location_point[0], self.display_frame_mouse_location_point[1]) == "upleft":
+                            self.move_display_frame_up_left()
                 else:
                     pass
             else:
@@ -297,22 +323,23 @@ class TkWindow():
                 restricted_windows_xy = self.display_frame_point_get_screen_xy(display_area_restriction_point[0], display_area_restriction_point[1])
                 print(restricted_windows_xy[0], restricted_windows_xy[1])
                 win32api.SetCursorPos((int(restricted_windows_xy[0]), int(restricted_windows_xy[1])))
-                if display_area_restriction_point[2] == 0:
-                    self.move_display_frame_up()
-                elif display_area_restriction_point[2] == 1:
-                    self.move_display_frame_up_right()
-                elif display_area_restriction_point[2] == 2:
-                    self.move_display_frame_right()
-                elif display_area_restriction_point[2] == 3:
-                    self.move_display_frame_down_right()
-                elif display_area_restriction_point[2] == 4:
-                    self.move_display_frame_down()
-                elif display_area_restriction_point[2] == 5:
-                    self.move_display_frame_down_left()
-                elif display_area_restriction_point[2] == 6:
-                    self.move_display_frame_left()
-                elif display_area_restriction_point[2] == 7:
-                    self.move_display_frame_up_left()
+                for speed in range(self.display_screen_canvas_scroll_speed):
+                    if display_area_restriction_point[2] == 0:
+                        self.move_display_frame_up()
+                    elif display_area_restriction_point[2] == 1:
+                        self.move_display_frame_up_right()
+                    elif display_area_restriction_point[2] == 2:
+                        self.move_display_frame_right()
+                    elif display_area_restriction_point[2] == 3:
+                        self.move_display_frame_down_right()
+                    elif display_area_restriction_point[2] == 4:
+                        self.move_display_frame_down()
+                    elif display_area_restriction_point[2] == 5:
+                        self.move_display_frame_down_left()
+                    elif display_area_restriction_point[2] == 6:
+                        self.move_display_frame_left()
+                    elif display_area_restriction_point[2] == 7:
+                        self.move_display_frame_up_left()
         else:
             pass
 
@@ -346,6 +373,16 @@ class TkWindow():
     def display_entity(self, entity: ce.Entity):
         self.canvas.create_image(entity.pos.x, entity.pos.y, image=entity.img, anchor=tk.NW)
 
+    def display_laser_shot(self, laser_shot: ls.LaserShot):
+        #pass
+        #print("Laser X: " + str(laser_shot.laser_pulse_end_point_vec.x))
+        #print(laser_shot.laser_pulse_end_point_vec.x, laser_shot.laser_pulse_end_point_vec.y)
+        #print("laserShotsBEGINNING")
+        #print(laser_shot.laser_pulse_beginning_point_vec.x, laser_shot.laser_pulse_beginning_point_vec.y)
+        #self.canvas.create_line(laser_shot.laser_pulse_beginning_point_vec.x, laser_shot.laser_pulse_beginning_point_vec.y, laser_shot.laser_pulse_end_point_vec.x, laser_shot.laser_pulse_end_point_vec.y)
+        #self.canvas.create_line(laser_shot.origin_point[0], laser_shot.origin_point[1], laser_shot.target_point[0], laser_shot.target_point[1])
+        self.canvas.create_line(laser_shot.laser_pulse_beginning_point_vec.x, laser_shot.laser_pulse_beginning_point_vec.y, laser_shot.laser_pulse_end_point_vec.x, laser_shot.laser_pulse_end_point_vec.y, fill=laser_shot.laser_pulse_color, width=laser_shot.laser_pulse_width)
+
     def display_all_elements(self):
         if self.unit_selector_enabled:
             self.draw_unit_selector()
@@ -353,6 +390,13 @@ class TkWindow():
             self.display_entity(entity)
             if not self.selected_entities.is_empty():
                 self.highlight_selected_entities()
+        for laser_shot in self.laser_shots:
+                self.display_laser_shot(laser_shot)
+                #collision_check_UPDATE
+
+            #print('displaying LASER SHOT')
+
+
 
     def tick(self):
         self.main_window.after(60, self.tick)
@@ -362,6 +406,31 @@ class TkWindow():
 
         self.track_mouse_location()
         self.restrict_mouse_within_display_area()
+
+        if self.track_entity_attack_ranges_enabled:
+            for entity in self.all_entities:
+                for other_entity in self.all_entities:
+                    if other_entity.id != entity.id:
+                        if other_entity.team_id != entity.team_id:
+                            entity.check_range_to_other_entity(other_entity)
+
+        for entity in self.all_entities:
+            entity.tick()
+
+        # removing_index_nums: list = []
+        # for index, laser_shot in enumerate(self.laser_shots):
+        #     #print(laser_shot)
+        #     if laser_shot.disabled():
+        #         removing_index_nums.append(index)
+        # for num in removing_index_nums:
+        #     self.laser_shots.pop(num)
+        #     for num in removing_index_nums:
+        #         num-=1
+        for laser_shot in self.laser_shots:
+            if laser_shot.disabled():
+                self.laser_shots.remove(laser_shot)
+        for laser_shot in self.laser_shots:
+            laser_shot.tick()
 
 
         if not self.selected_entities.is_empty():

@@ -1,6 +1,7 @@
 from PIL import Image
 from PIL import ImageTk
 from pathlib import Path
+import math as math
 
 class ImgInfo():
     def __init__(self):
@@ -17,6 +18,9 @@ class Vec2d():
     def __init__(self, x: float, y: float):
         self.x = x
         self.y = y
+
+    def distance_to(self, other_vec):
+        return math.sqrt( ((other_vec.x - self.x)*(other_vec.x - self.x)) + ((other_vec.y - self.y)*(other_vec.y - self.y)) )
 
 class AABB():
     def __init__(self, x1: float, y1: float, x2: float, y2: float):
@@ -90,3 +94,18 @@ class AABB():
             return (self.x2, self.y1, 5)
         if x > self.x2 and y > self.y2:
             return (self.x2, self.y2, 7)
+
+    def find_center_point(self):
+        width = self.x2 - self.x1
+        height = self.y2 - self.y1
+
+        new_x = self.x1 + width/2
+        new_y = self.y1 + height/2
+
+        self.center_point = (new_x, new_y)
+
+    def distance_to_other_aabb(self, other_aabb):
+        self.find_center_point()
+        other_aabb.find_center_point()
+
+        return math.sqrt( ((other_aabb.center_point[0] - self.center_point[0])*(other_aabb.center_point[0] - self.center_point[0])) + ((other_aabb.center_point[1] - self.center_point[1])*(other_aabb.center_point[1] - self.center_point[1])) )

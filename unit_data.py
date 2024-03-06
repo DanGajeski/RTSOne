@@ -32,7 +32,7 @@ class AABB():
         self.y2 = y2
 
     def check_xy_in_aabb(self, x: float, y: float):
-        return x >= self.x1 and x <= self.x2 and y >= self.y1 and y <= self.y2
+        return x >= self.x1-1 and x <= self.x2+1 and y >= self.y1-1 and y <= self.y2+1 #TEST->adding1-to-buffer-size-to-prevent-overlap-of-barriers-and-subsequent-overlap-of-unit-locations
 
     def check_aabb_in_aabb(self, aabb_check):
         if self.check_xy_in_aabb(aabb_check.x1, aabb_check.y1):

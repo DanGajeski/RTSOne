@@ -22,12 +22,32 @@ class AllEntities():
         self.move_entities()
         for entity in self.all:
             entity.tick()
+        #DOUBLE-CHECK-ORDER
+        #self.run_entity_attacks()
+    def toggle_entity_attack_attitude(self):
+        for entity in self.all:
+            if entity.is_attacking():
+                entity.stop_attacking()
+            elif not entity.is_attacking():
+                entity.start_attacking()
 
     # def set_target_vec(self, target_vec: ud.Vec2d):
     #     self.target_vec = target_vec
     #     for entity in self.all:
     #         entity.set_target_vec(self.target_vec)
+    def run_entity_attacks(self):
+        for entity in self.all:
+            for other_entity in self.all:
+                if other_entity.id != entity.id:
+                    if other_entity.team_id != entity.team_id:
+                        entity.check_range_to_other_entity(other_entity)
 
+
+        for entity in self.all:
+            for other_entity in self.all:
+                if other_entity.id != entity.id:
+                    if other_entity.team_id != entity.team_id:
+                        entity.check_range_to_other_entity(other_entity)
     def move_entities(self):
         for entity in self.all:
             for count in range(entity.speed):
@@ -37,10 +57,11 @@ class AllEntities():
                         entity.move_entity()
                         #if-collision
                     else:
-                        if self.check_entity_x_collision(entity):
+                        if self.check_entity_x_collision(entity):#true-if-no-x-collision
                             entity.move_entity_only_x()
-                        elif self.check_entity_y_collision(entity):
+                        elif self.check_entity_y_collision(entity):#true-if-no-y-collision
                             entity.move_entity_only_y()
+                    entity.stop_counter += 0 #TEST-add-to-this-to-re-enable-stop-counter
 
     #aabb_blocker_tester_method
     #UPDATE=-> To include simple x and y movement if multiple entities stuck

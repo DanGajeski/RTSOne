@@ -22,10 +22,13 @@ class Entity:
         self.aabb = ud.AABB(self.pos.x, self.pos.y, (self.pos.x + self.img_info.img_width), (self.pos.y + self.img_info.img_height))
         self.normalizer: dm.Normalizer
 
+        self.attacking: bool = False
         self.laser_on_cooldown: bool = False
         self.cooldown_counter_one: float
         self.cooldown_counter_two: float
         self.laser_shot_cooldown: float = 1.0
+
+        self.stop_counter: int = 0 #gets-reset-to-0-in-selected_entities.set_target_vec()
 
         def init_img():
             #contains-new-att-self.img
@@ -40,6 +43,8 @@ class Entity:
 
         self.immobile_tick_counter: int = 0
 
+    #REFACTOR=>Pass-In-environments-so-that-entity-tick-handles-shooting-moving//all-entity-actions
+    #REFACTOR==>entity-must-know-of-all-other-entities-and-the-game-environment
     def tick(self):
         if self.laser_on_cooldown:
             self.track_cooldown()
@@ -86,16 +91,27 @@ class Entity:
         self.aabb.y1 += self.normalizer.normalized_movement_vec.y
         self.aabb.y2 += self.normalizer.normalized_movement_vec.y
 
-    def check_if_entity_at_target_vec(self):
+    def check_if_entity_at_target_vec(self,):
+        if self.stop_counter > 5: #condition-for-blocked, reset-at-selected_entities.set_target_vec()
+            return True
         if self.pos.x < self.target_vec.x + 1 and self.pos.x > self.target_vec.x - 1 and self.pos.y < self.target_vec.y + 1 and self.pos.y > self.target_vec.y - 1:
             return True
         else:
             return False
 
-    def check_range_to_other_entity(self, other_entity):
+    def check_range_to_other_entity(self, other_entity):#checks-range-AND-attacks-other-entity-IF-in-range
         if self.aabb.distance_to_other_aabb(other_entity.aabb) <= self.attack_range:
             #print(str(self.id) + " is in range of " + str(other_entity.id) + " at a range of " + str(self.aabb.distance_to_other_aabb(other_entity.aabb)))
             self.shoot_at_entity(other_entity)
+
+    def is_attacking(self):
+        return self.attacking
+
+    def start_attacking(self):
+        self.attacking = True
+
+    def stop_attacking(self):
+        self.attacking = False
 
     #if-check_range_to_other_entity-already-ran
     def shoot_at_entity(self, other_entity):

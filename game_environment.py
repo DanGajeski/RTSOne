@@ -26,10 +26,14 @@ class GameEnvironment():
         main_window.bind('t', lambda event: self.toggle_track_entity_attack_ranges())
 
     def toggle_track_entity_attack_ranges(self):
-        if self.track_entity_attack_ranges_enabled:
-            self.track_entity_attack_ranges_enabled = False
-        elif not self.track_entity_attack_ranges_enabled:
-            self.track_entity_attack_ranges_enabled = True
+        #UPDATE-FOR-LATER-WHEN-MORE-SPECIFIC-ATTACK-MOVES-ARE-INTEGRATED
+        self.all_entities.toggle_entity_attack_attitude()
+
+        print('toggling-ATTACK-RANGES!!')
+        # if self.track_entity_attack_ranges_enabled:
+        #     self.track_entity_attack_ranges_enabled = False
+        # elif not self.track_entity_attack_ranges_enabled:
+        #     self.track_entity_attack_ranges_enabled = True
 
     def init_all_test_entities(self):
         def init_team_one_entities():
@@ -58,12 +62,12 @@ class GameEnvironment():
         self.all_projectiles.tick()
 
         #ABSTRACT-into-entities_class
-        if self.track_entity_attack_ranges_enabled:
-            for entity in self.all_entities.all:
-                for other_entity in self.all_entities.all:
-                    if other_entity.id != entity.id:
-                        if other_entity.team_id != entity.team_id:
-                            entity.check_range_to_other_entity(other_entity)
+        #if self.track_entity_attack_ranges_enabled:
+        #    for entity in self.all_entities.all:
+        #        for other_entity in self.all_entities.all:
+        #            if other_entity.id != entity.id:
+        #                if other_entity.team_id != entity.team_id:
+        #                    entity.check_range_to_other_entity(other_entity)
 
         #REWORK-TO-MOVE-ANY-ENTITY-THAT-TARGET_VEC-IS-DIFFERENT-TO-CURRENT_VEC
         #if not self.selected_entities.is_empty():

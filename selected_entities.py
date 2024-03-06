@@ -49,6 +49,9 @@ class SelectedEntities(ae.AllEntities):
         self.target_vec = target_vec
         for entity in self.selected:
             entity.set_target_vec(self.target_vec)
+            entity.stop_counter = 0
+            print(entity)
+            print(entity.stop_counter)
 
     #aabb_blocker_tester_method
     #UPDATE=-> To include simple x and y movement if multiple entities stuck

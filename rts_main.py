@@ -1,14 +1,27 @@
 import tk_simple_canvas
 import unit_data
 import canvas_entities as ce
+import game_environment as game_environment
 
 class RTSMain:
     def __init__(self):
-        self.canvas_width: float = 500.0
-        self.canvas_height: float = 500.0
+        self.display_environment: tk_simple_canvas.DisplayEnvironment = tk_simple_canvas.DisplayEnvironment()
+        self.game_environment = game_environment.GameEnvironment()
 
-        self.game_area: tk_simple_canvas.TkWindow = tk_simple_canvas.TkWindow(map_width=self.canvas_width, map_height=self.canvas_height)
-        self.img_info: unit_data.ImgInfo = unit_data.ImgInfo()
+        #tie-environments-together
+        self.display_environment.import_game_environment(self.game_environment)
+        self.game_environment.import_display_environment(self.display_environment)
+
+        #for-key_bindings
+        self.main_window = self.display_environment.get_main_window()
+        self.display_environment.set_display_key_bindings()#don'tneedtopass-here-because-main_window-comes-from-display_environment
+        self.game_environment.set_display_key_bindings(self.main_window)
+
+    def tick(self):
+        self.main_window.after(60, self.tick)
+        self.display_environment.tick()
+        self.game_environment.tick()
 
 rtsmain = RTSMain()
-rtsmain.game_area.run_main_window()
+rtsmain.tick()
+rtsmain.display_environment.run_main_window()

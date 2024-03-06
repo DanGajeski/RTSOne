@@ -10,9 +10,11 @@ class ImgInfo():
 
         self.img_folder_path: str = "imgs"
         self.main_character_img_name: str = "happy_guy.png"
+        self.player_two_trooper_img_name: str = "mad_guy.png"
         self.img_file_location = Path(__file__).parent/self.img_folder_path
 
         self.main_character_img: ImageTk.PhotoImage = ImageTk.PhotoImage(Image.open(self.img_file_location/self.main_character_img_name))
+        self.player_two_trooper_img: ImageTk.PhotoImage = ImageTk.PhotoImage(Image.open(self.img_file_location/self.player_two_trooper_img_name))
 
 class Vec2d():
     def __init__(self, x: float, y: float):

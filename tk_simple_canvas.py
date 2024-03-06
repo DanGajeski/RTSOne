@@ -9,26 +9,20 @@ import dan_math as dm
 import math as math
 
 
-class TkWindow():
+class DisplayEnvironment():
 
-    def __init__(self, map_width=500.0, map_height=500.0):
+    def __init__(self):
         #contianer_frame_main_window_offset
+        self.map_width: float = 1000.0
+        self.map_height: float = 1000.0
+
         self.display_frame_main_window_offset: float = 10.0
 
         self.main_window_width: float = 520.0
         self.main_window_height: float = 520.0
-        #self.map_width_default: float = self.main_window_width - 20.0
-        #self.map_height_default: float = self.main_window_height - 20.0
-        self.map_width: float = map_width#newCANVASdesignation
-        self.map_height: float = map_height#newCANVASdesignation
 
         self.canvas_x_placement: int = 0
         self.canvas_y_placement: int = 0
-
-        #self.canvas_width: float = map_width#WORKINPROGRESSCHANGE
-        #self.canvas_height: float = map_height#WORKINPROGRESSCHANGE
-        #self.main_window_height: float = self.canvas_width + (self.container_frame_main_window_offset*2)
-        #self.main_window_width: float = self.canvas_height + (self.container_frame_main_window_offset*2)
 
         #main_window_dimensions_geometry_object_formatted
         self.main_window_dimensions_geometry_formatted: str = str(int(self.main_window_width)) + "x" + str(int(self.main_window_height))
@@ -43,43 +37,61 @@ class TkWindow():
         self.main_window = tk.Tk()
         self.main_window.geometry(self.main_window_dimensions_geometry_formatted)
         self.main_window.title(self.main_window_title_text)
+
         #init_frame
         self.display_frame = tk.Frame(self.main_window, width=self.main_window_width - self.display_frame_main_window_offset*2, height=self.main_window_height - self.display_frame_main_window_offset*2)
         self.display_frame.place(x=self.display_frame_main_window_offset, y=self.display_frame_main_window_offset)
         self.display_frame_aabb: ud.AABB = ud.AABB(0, 0, self.display_frame.winfo_reqwidth(), self.display_frame.winfo_reqheight())
+
         #init_canvas
         self.canvas = tk.Canvas(self.display_frame, bg=self.canvas_bg_color, width=self.map_width, height=self.map_height)
         self.canvas.place(x=self.canvas_x_placement,y=self.canvas_y_placement)
         self.canvas_aabb: ud.AABB = ud.AABB(0, 0, self.canvas.winfo_reqwidth(), self.canvas.winfo_reqheight())
 
-        self.laser_shots: list = []
+        #MOVING
+        #MOVE-GAMEENVIRONMENT
+        #self.laser_shots: list = []
 
-        self.player_entity: ce.Entity = ce.Entity(ud.Vec2d(50.0, 50.0), 1, 0, self.laser_shots)
-        self.game_entity_one: ce.Entity = ce.Entity(ud.Vec2d(100.0, 100.0), 2, 0, self.laser_shots)
-        self.game_entity_two: ce.Entity = ce.Entity(ud.Vec2d(200.0, 200.0), 3, 0, self.laser_shots)
-        self.game_entity_three: ce.Entity = ce.Entity(ud.Vec2d(300.0, 300.0), 4, 0, self.laser_shots)
-        self.game_entity_four: ce.Entity = ce.Entity(ud.Vec2d(400.0, 400.0), 5, 0, self.laser_shots)
-        self.game_entity_five: ce.Entity = ce.Entity(ud.Vec2d(200.0, 100.0), 6, 0, self.laser_shots)
+        #MOVING
+        #MOVE-GAMEENVIRONMENT
+        #self.player_entity: ce.Entity = ce.Entity(ud.Vec2d(50.0, 50.0), 1, 0, self.laser_shots)
+        #self.game_entity_one: ce.Entity = ce.Entity(ud.Vec2d(100.0, 100.0), 2, 0, self.laser_shots)
+        #self.game_entity_two: ce.Entity = ce.Entity(ud.Vec2d(200.0, 200.0), 3, 0, self.laser_shots)
+        #self.game_entity_three: ce.Entity = ce.Entity(ud.Vec2d(300.0, 300.0), 4, 0, self.laser_shots)
+        #self.game_entity_four: ce.Entity = ce.Entity(ud.Vec2d(400.0, 400.0), 5, 0, self.laser_shots)
+        #self.game_entity_five: ce.Entity = ce.Entity(ud.Vec2d(200.0, 100.0), 6, 0, self.laser_shots)
 
-        self.enemy_entity_one: ce.Entity = ce.Entity(ud.Vec2d(100.0, 400.0), 7, 1, self.laser_shots)
-        self.enemy_entity_two: ce.Entity = ce.Entity(ud.Vec2d(400.0, 100.0), 8, 1, self.laser_shots)
-        self.enemy_entity_three: ce.Entity = ce.Entity(ud.Vec2d(400.0, 150), 9, 1, self.laser_shots)
-        self.enemy_entity_four: ce.Entity = ce.Entity(ud.Vec2d(100.0, 450), 10, 1, self.laser_shots)
-        self.enemy_entity_five: ce.Entity = ce.Entity(ud.Vec2d(150.0, 370), 11, 1, self.laser_shots)
+        #MOVING
+        #MOVE-GAMEENVIRONMENT
+        #self.enemy_entity_one: ce.Entity = ce.Entity(ud.Vec2d(100.0, 400.0), 7, 1, self.laser_shots)
+        #self.enemy_entity_two: ce.Entity = ce.Entity(ud.Vec2d(400.0, 100.0), 8, 1, self.laser_shots)
+        #self.enemy_entity_three: ce.Entity = ce.Entity(ud.Vec2d(400.0, 150), 9, 1, self.laser_shots)
+        #self.enemy_entity_four: ce.Entity = ce.Entity(ud.Vec2d(100.0, 450), 10, 1, self.laser_shots)
+        #self.enemy_entity_five: ce.Entity = ce.Entity(ud.Vec2d(150.0, 370), 11, 1, self.laser_shots)
 
+        #MOVING
+        #MOVE-GAMEENVIRONMENT
         #inits w/ player_entity and game_entity_one, game_entity_two
-        self.all_entities: list = [self.player_entity, self.game_entity_one, self.game_entity_two, self.game_entity_three, self.game_entity_four, self.game_entity_five, self.enemy_entity_one, self.enemy_entity_two, self.enemy_entity_three, self.enemy_entity_four, self.enemy_entity_five]
+        #self.all_entities: list = [self.player_entity, self.game_entity_one, self.game_entity_two, self.game_entity_three, self.game_entity_four, self.game_entity_five, self.enemy_entity_one, self.enemy_entity_two, self.enemy_entity_three, self.enemy_entity_four, self.enemy_entity_five]
 
+
+        #MOVE-GAMEENVIRONMENT
         #default-target_vec_value
-        self.target_vec: ud.Vec2d = ud.Vec2d(100.0, 100.0)
+        #self.target_vec: ud.Vec2d = ud.Vec2d(100.0, 100.0)
+
 
         #FOR-PRINT-TESTING-ONLY
         #self.example_entity: ce.Entity = self.game_entity_one
-        self.x_differential: int = 0
-        self.y_differential: int = 0
+        #self.x_differential: int = 0
+        #self.y_differential: int = 0
 
+        #MOVE-GAMEENVIRONMENT
         #game_spaceNON_UI_ELEMENTS
-        self.selected_entities = se.Selected_Entities()
+
+        #MOVING
+        #self.selected_entities = se.SelectedEntities()
+
+
         self.origin_x: float = 0.0
         self.origin_y: float = 0.0
         self.destination_x: float = 0.0
@@ -91,28 +103,27 @@ class TkWindow():
 
         self.display_screen_canvas_scroll_speed: int = 5
 
+        #MOVING
         self.track_entity_attack_ranges_enabled: bool = False
+        #Switch-to-All_Entities class
 
+        #self.set_window_bindings()
+        #change-to-call-tick-from-rts-main?
+        #self.tick()
 
+    #attach-to-game-environment
+    def import_game_environment(self, game_environment):
+        self.game_environment = game_environment
 
-        self.player = player.Player(0,0)
-
-        for entity in self.all_entities:
+        #INITIAL-DISPLAY-CALL
+        for entity in self.game_environment.all_entities.all:
             self.display_entity(entity)
-        self.set_window_bindings()
-        self.tick()
 
-    #OLD
-    #def get_mouse_x_location(self):
-    #    x = self.main_window.winfo_pointerx()
-    #    return (self.main_window.winfo_pointerx() - self.main_window.winfo_rootx()) - self.display_frame_main_window_offset
-    #OLD
-    #def get_mouse_y_location(self):
-    #   y = self.main_window.winfo_pointery()
-    #   return (self.main_window.winfo_pointery() - self.main_window.winfo_rooty()) - self.display_frame_main_window_offset
+    #for-key_bindings
+    def get_main_window(self):
+        return self.main_window
 
     def draw_map_stripes_background(self):
-
         #new_vars
         self.working_canvas_width: float = float(self.canvas.winfo_width())
         self.working_canvas_width_twenty_spaces_count: int = int(self.working_canvas_width / 20)
@@ -175,16 +186,18 @@ class TkWindow():
         #draw_map_stripes_white_dominance()
         #draw_map_stripes_black_dominance()
 
+    #MOVING
     def set_target_movement_location(self):
-        self.target_vec = ud.Vec2d(self.canvas_mouse_location_x, self.canvas_mouse_location_y)
+        #self.target_vec = ud.Vec2d(self.canvas_mouse_location_x, self.canvas_mouse_location_y)
+        self.game_environment.selected_entities.set_target_vec(ud.Vec2d(self.canvas_mouse_location_x, self.canvas_mouse_location_y))
 
-    def set_window_bindings(self):
+    def set_display_key_bindings(self):
         self.main_window.bind('<Motion>', lambda event: self.track_mouse_location())
         self.main_window.bind('<Button-3>', lambda event: self.set_target_movement_location())
         self.main_window.bind('<Button-1>', lambda event: self.set_unit_selector_origin())
         self.main_window.bind('<ButtonRelease-1>', lambda event: self.button_release_checks())
         self.main_window.bind('l', lambda event: self.lock_cursor_to_frame())
-        self.main_window.bind('t', lambda event: self.enable_track_entity_attack_ranges())
+        #self.main_window.bind('t', lambda event: self.enable_track_entity_attack_ranges())
         #self.main_window.bind('<Up>', lambda event: self.move_display_frame_up())
         #self.main_window.bind('<Left>', lambda event: self.move_display_frame_left())
         #self.main_window.bind('<Right>', lambda event: self.move_display_frame_right())
@@ -241,8 +254,11 @@ class TkWindow():
 
         self.origin_x = self.canvas_mouse_location_x
         self.origin_y = self.canvas_mouse_location_y
+        #FORTESTING_EP_1
+        print(self.origin_x)
+        print(self.origin_y)
 
-        for entity in self.all_entities:
+        for entity in self.game_environment.all_entities.all:
             if entity.aabb.check_xy_in_aabb(self.origin_x, self.origin_y):
                 origin_on_unit = True
                 selecting_entity = entity
@@ -254,7 +270,7 @@ class TkWindow():
             self.enable_unit_selector()
 
     def select_entity(self, entity):
-        self.selected_entities.add_to_selected_entities(entity)
+        self.game_environment.selected_entities.add_to_selected_entities(entity)
 
     def enable_unit_selector(self):
         self.unit_selector_enabled = True
@@ -263,12 +279,13 @@ class TkWindow():
 
     def make_selection(self):
         #clear-selected-entities-first
-        self.selected_entities.remove_all_selected_entities()
-        for entity in self.all_entities:
+        self.game_environment.selected_entities.remove_all_selected_entities()
+        for entity in self.game_environment.all_entities.all:
             if self.motion_selection_aabb.check_aabb_in_aabb(entity.aabb):
-                if self.player.team_id == entity.team_id:
-                    self.selected_entities.add_to_selected_entities(entity)
+                if self.game_environment.player.team_id == entity.team_id:
+                    self.game_environment.selected_entities.add_to_selected_entities(entity)
 
+    #MOVING
     def enable_track_entity_attack_ranges(self):
         self.track_entity_attack_ranges_enabled: bool = True
 
@@ -323,6 +340,7 @@ class TkWindow():
                 restricted_windows_xy = self.display_frame_point_get_screen_xy(display_area_restriction_point[0], display_area_restriction_point[1])
                 print(restricted_windows_xy[0], restricted_windows_xy[1])
                 win32api.SetCursorPos((int(restricted_windows_xy[0]), int(restricted_windows_xy[1])))
+                #pass speed into method
                 for speed in range(self.display_screen_canvas_scroll_speed):
                     if display_area_restriction_point[2] == 0:
                         self.move_display_frame_up()
@@ -351,6 +369,10 @@ class TkWindow():
             self.destination_y = self.canvas_mouse_location_y
             #self.destination_y = self.get_mouse_y_location()
 
+            #FORTESTING
+            print(self.destination_x)
+            print(self.destination_y)
+
             self.motion_selection_aabb.x2 = self.destination_x
             self.motion_selection_aabb.y2 = self.destination_y
 
@@ -367,39 +389,31 @@ class TkWindow():
         self.main_window.mainloop()
 
     def highlight_selected_entities(self):
-        for entity in self.selected_entities.selected:
+        for entity in self.game_environment.selected_entities.selected:
             self.canvas.create_rectangle(entity.aabb.x1, entity.aabb.y1, entity.aabb.x2, entity.aabb.y2, outline='red', width=2)
 
     def display_entity(self, entity: ce.Entity):
         self.canvas.create_image(entity.pos.x, entity.pos.y, image=entity.img, anchor=tk.NW)
 
     def display_laser_shot(self, laser_shot: ls.LaserShot):
-        #pass
-        #print("Laser X: " + str(laser_shot.laser_pulse_end_point_vec.x))
-        #print(laser_shot.laser_pulse_end_point_vec.x, laser_shot.laser_pulse_end_point_vec.y)
-        #print("laserShotsBEGINNING")
-        #print(laser_shot.laser_pulse_beginning_point_vec.x, laser_shot.laser_pulse_beginning_point_vec.y)
-        #self.canvas.create_line(laser_shot.laser_pulse_beginning_point_vec.x, laser_shot.laser_pulse_beginning_point_vec.y, laser_shot.laser_pulse_end_point_vec.x, laser_shot.laser_pulse_end_point_vec.y)
-        #self.canvas.create_line(laser_shot.origin_point[0], laser_shot.origin_point[1], laser_shot.target_point[0], laser_shot.target_point[1])
         self.canvas.create_line(laser_shot.laser_pulse_beginning_point_vec.x, laser_shot.laser_pulse_beginning_point_vec.y, laser_shot.laser_pulse_end_point_vec.x, laser_shot.laser_pulse_end_point_vec.y, fill=laser_shot.laser_pulse_color, width=laser_shot.laser_pulse_width)
 
+    #UPDATE-AFTER-REFACTOR
     def display_all_elements(self):
         if self.unit_selector_enabled:
             self.draw_unit_selector()
-        for entity in self.all_entities:
+        for entity in self.game_environment.all_entities.all:
             self.display_entity(entity)
-            if not self.selected_entities.is_empty():
+            if not self.game_environment.selected_entities.is_empty():
                 self.highlight_selected_entities()
-        for laser_shot in self.laser_shots:
+        for laser_shot in self.game_environment.all_projectiles.laser_shots:
                 self.display_laser_shot(laser_shot)
                 #collision_check_UPDATE
 
             #print('displaying LASER SHOT')
 
-
-
     def tick(self):
-        self.main_window.after(60, self.tick)
+        #self.main_window.after(60, self.tick)
         self.canvas.delete('all')
         self.update_canvas_frame_placement()
         self.draw_map_stripes_background()
@@ -407,15 +421,19 @@ class TkWindow():
         self.track_mouse_location()
         self.restrict_mouse_within_display_area()
 
-        if self.track_entity_attack_ranges_enabled:
-            for entity in self.all_entities:
-                for other_entity in self.all_entities:
-                    if other_entity.id != entity.id:
-                        if other_entity.team_id != entity.team_id:
-                            entity.check_range_to_other_entity(other_entity)
+        self.display_all_elements()
 
-        for entity in self.all_entities:
-            entity.tick()
+        #moving-to-game_environment
+        #MOVING
+        # if self.track_entity_attack_ranges_enabled:
+        #     for entity in self.all_entities:
+        #         for other_entity in self.all_entities:
+        #             if other_entity.id != entity.id:
+        #                 if other_entity.team_id != entity.team_id:
+        #                     entity.check_range_to_other_entity(other_entity)
+        #MOVING-(tick)
+        #for entity in self.all_entities:
+        #    entity.tick()
 
         # removing_index_nums: list = []
         # for index, laser_shot in enumerate(self.laser_shots):
@@ -426,14 +444,15 @@ class TkWindow():
         #     self.laser_shots.pop(num)
         #     for num in removing_index_nums:
         #         num-=1
-        for laser_shot in self.laser_shots:
-            if laser_shot.disabled():
-                self.laser_shots.remove(laser_shot)
-        for laser_shot in self.laser_shots:
-            laser_shot.tick()
 
+        #MOVING-(tick)
+        #for laser_shot in self.laser_shots:
+        #    if laser_shot.disabled():
+        #        self.laser_shots.remove(laser_shot)
+        #for laser_shot in self.laser_shots:
+        #    laser_shot.tick()
 
-        if not self.selected_entities.is_empty():
-            self.selected_entities.move_entities(self.target_vec, self.all_entities)
+        #MOVING-(tick)
 
-        self.display_all_elements()
+        #if not self.selected_entities.is_empty():
+        #    self.selected_entities.move_entities(self.target_vec, self.all_entities)

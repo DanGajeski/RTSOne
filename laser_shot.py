@@ -13,11 +13,18 @@ class LaserShot():
         self.target_vec = ud.Vec2d(self.target_x, self.target_y)
         self.team_id: int = origin_team_id
         self.laser_pulse_range: int = 60
-        self.laser_pulse_color: str = "#FF0000"
+        #self.laser_pulse_color: str = "#FF0000"
         self.laser_pulse_width: int = 3
         self.laser_pulse_length: int = 30
         self.laser_pulse_speed: int = 20
 
+        def init_laser_pulse_color():
+            #contains-new-att-self.laser_pulse_color
+            if self.team_id == 0:
+                self.laser_pulse_color = "#FF0000"
+            elif self.team_id == 1:
+                self.laser_pulse_color = "#0000FF"
+        init_laser_pulse_color()
 
         #untested
         self.origin_target_angle = math.atan2(self.target_y - self.origin_y, self.target_x - self.origin_x)

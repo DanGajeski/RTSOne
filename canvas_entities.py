@@ -1,4 +1,5 @@
 import unit_data as ud
+import time as time
 import dan_math as dm
 import laser_shot as laser_shot
 
@@ -9,36 +10,51 @@ class Entity:
         self.img_info = ud.ImgInfo()
         self.health: int = 10
         self.pos = Vec2d
-        self.img = self.img_info.main_character_img
         self.img_width = self.img_info.img_width
         self.img_height = self.img_info.img_height
         self.attack_tick_counter: int = 0
-        self.target_vec: ud.Vec2d
+        self.target_vec: ud.Vec2d = ud.Vec2d(50.0, 50.0)
         self.distance_from_target_vec: float
         #low-level-tick-tied-entity-speed
-        self.attack_range: int = 100
+        self.attack_range: int = 150
         self.speed: int = 6
         self.laser_shots: list = laser_shots
         self.aabb = ud.AABB(self.pos.x, self.pos.y, (self.pos.x + self.img_info.img_width), (self.pos.y + self.img_info.img_height))
         self.normalizer: dm.Normalizer
 
+        self.laser_on_cooldown: bool = False
+        self.cooldown_counter_one: float
+        self.cooldown_counter_two: float
+        self.laser_shot_cooldown: float = 1.0
+
+        def init_img():
+            #contains-new-att-self.img
+            if self.team_id == 0:
+                self.img = self.img_info.main_character_img
+            elif self.team_id == 1:
+                self.img = self.img_info.player_two_trooper_img
+
+        init_img()
 
         self.can_attack: bool = True
 
         self.immobile_tick_counter: int = 0
 
     def tick(self):
-        if self.can_attack == False:
-            self.attack_tick_counter += 1
-        if self.attack_tick_counter == 15:
-            self.can_attack = True
-            self.attack_tick_counter = 0
+        if self.laser_on_cooldown:
+            self.track_cooldown()
 
     #def add_to_tick_attack_count(self):
     #    self.attack_tick_counter += 1
 
     #def reset_tick_attack_count(self):
     #    self.attack_tick_counter = 0
+
+    def track_cooldown(self):
+        self.cooldown_counter_two = time.perf_counter()
+
+        if self.cooldown_counter_two - self.cooldown_counter_one >= self.laser_shot_cooldown:
+            self.laser_on_cooldown = False
 
     def set_target_vec(self, target_vec: ud.Vec2d):
         self.target_vec = target_vec
@@ -83,13 +99,21 @@ class Entity:
 
     #if-check_range_to_other_entity-already-ran
     def shoot_at_entity(self, other_entity):
-        if self.can_attack:
-            if self.team_id == 0:
-            #print(str(self.id) + " is shooting at " + str(other_entity.id))
-                self.aabb.find_center_point()
-                other_entity.aabb.find_center_point()
+        # if self.can_attack:
+        #     #if self.team_id == 0:
+        #     #print(str(self.id) + " is shooting at " + str(other_entity.id))
+        #     self.aabb.find_center_point()
+        #     other_entity.aabb.find_center_point()
+        #
+        #     self.laser_shots.append(laser_shot.LaserShot(self.aabb.center_point, other_entity.aabb.center_point, self.team_id))
+        #     self.can_attack = False
+            #else:
+            #    pass
 
-                self.laser_shots.append(laser_shot.LaserShot(self.aabb.center_point, other_entity.aabb.center_point, self.team_id))
-                self.can_attack = False
-            else:
-                pass
+        if not self.laser_on_cooldown:
+            self.cooldown_counter_one = time.perf_counter()
+            self.aabb.find_center_point()
+            other_entity.aabb.find_center_point()
+
+            self.laser_shots.append(laser_shot.LaserShot(self.aabb.center_point, other_entity.aabb.center_point, self.team_id))
+            self.laser_on_cooldown = True

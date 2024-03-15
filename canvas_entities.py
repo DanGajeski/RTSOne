@@ -60,6 +60,9 @@ class Entity:
             self.track_cooldown()
         if self.attacking:
             self.run_entity_attacks()
+        if not self.check_if_entity_at_target_vec():
+            self.move_entity_check()
+
     #def add_to_tick_attack_count(self):
     #    self.attack_tick_counter += 1
 
@@ -141,3 +144,75 @@ class Entity:
             if other_entity.id != self.id:
                 if other_entity.team_id != self.team_id:
                     self.check_range_to_other_entity(other_entity)
+
+
+
+
+
+
+    def move_entity_check(self):
+        for count in range(self.speed):
+            if self.check_entity_collision():
+                self.move_entity()
+            else:
+                if self.check_entity_x_collision():#true-if-no-x-collision
+                    self.move_entity_only_x()
+                elif self.check_entity_y_collision():#true-if-no-y-collision
+                    self.move_entity_only_y()
+                #0->NOT-CURRENTLY-IN-USE
+                self.stop_counter += 0 #TEST-add-to-this-to-re-enable-stop-counter
+
+    #aabb_blocker_tester_method
+    def check_entity_collision(self):
+        self.update_normalizer()
+
+        #test_entity_displacement: int = 10
+
+        can_move: bool = True
+        test_movement_aabb = ud.AABB(self.aabb.x1, self.aabb.y1, self.aabb.x2, self.aabb.y2)
+
+        test_movement_aabb.x1 += self.normalizer.normalized_movement_vec.x
+        test_movement_aabb.y1 += self.normalizer.normalized_movement_vec.y
+        test_movement_aabb.x2 += self.normalizer.normalized_movement_vec.x
+        test_movement_aabb.y2 += self.normalizer.normalized_movement_vec.y
+
+        for other_entity in self.all_entities.all:
+            if other_entity.id != self.id:
+                #blocker_aabb_test = ud.AABB(other_entity.aabb.x1 - test_entity_displacement, other_entity.aabb.y1 - test_entity_displacement, other_entity.aabb.x2 + test_entity_displacement, other_entity.aabb.y2 + test_entity_displacement)
+                #if blocker_aabb_test.check_aabb_in_aabb(test_movement_aabb):
+                if other_entity.aabb.check_aabb_in_aabb(test_movement_aabb):
+                    can_move = False
+
+        return can_move
+
+    def check_entity_x_collision(self):
+        self.update_normalizer()
+
+        can_move: bool = True
+        test_movement_aabb = ud.AABB(self.aabb.x1, self.aabb.y1, self.aabb.x2, self.aabb.y2)
+
+        test_movement_aabb.x1 += self.normalizer.normalized_movement_vec.x
+        test_movement_aabb.x2 += self.normalizer.normalized_movement_vec.x
+
+        for other_entity in self.all_entities.all:
+            if other_entity.id != self.id:
+                if other_entity.aabb.check_aabb_in_aabb(test_movement_aabb):
+                    can_move = False
+
+        return can_move
+
+    def check_entity_y_collision(self):
+        self.update_normalizer()
+
+        can_move: bool = True
+        test_movement_aabb = ud.AABB(self.aabb.x1, self.aabb.y1, self.aabb.x2, self.aabb.y2)
+
+        test_movement_aabb.y1 += self.normalizer.normalized_movement_vec.y
+        test_movement_aabb.y2 += self.normalizer.normalized_movement_vec.y
+
+        for other_entity in self.all_entities.all:
+            if other_entity.id != self.id:
+                if other_entity.aabb.check_aabb_in_aabb(test_movement_aabb):
+                    can_move = False
+
+        return can_move

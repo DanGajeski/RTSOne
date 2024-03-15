@@ -22,9 +22,6 @@ class RTSMain:
         self.display_environment.tick()
         self.game_environment.tick()
 
-
-
-
 rtsmain = RTSMain()
 rtsmain.tick()
 rtsmain.display_environment.run_main_window()

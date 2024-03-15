@@ -7,7 +7,7 @@ import player as player
 
 class GameEnvironment():
     def __init__(self):
-        self.all_projectiles = pro.AllProjectiles()
+        self.projectiles = pro.AllProjectiles()
         self.all_entities = all_entities.AllEntities()
         self.selected_entities = selected_entities.SelectedEntities()
         self.target_vec = ud.Vec2d(0.0, 0.0)
@@ -37,20 +37,20 @@ class GameEnvironment():
 
     def init_all_test_entities(self):
         def init_team_one_entities():
-            entity_one = ce.Entity(ud.Vec2d(50.0, 50.0), 1, 0, self.all_projectiles.laser_shots)
-            entity_two = ce.Entity(ud.Vec2d(100.0, 100.0), 2, 0, self.all_projectiles.laser_shots)
-            entity_three = ce.Entity(ud.Vec2d(200.0, 200.0), 3, 0, self.all_projectiles.laser_shots)
-            entity_four = ce.Entity(ud.Vec2d(300.0, 300.0), 4, 0, self.all_projectiles.laser_shots)
-            entity_five = ce.Entity(ud.Vec2d(400.0, 400.0), 5, 0, self.all_projectiles.laser_shots)
-            entity_six = ce.Entity(ud.Vec2d(200.0, 100.0), 6, 0, self.all_projectiles.laser_shots)
+            entity_one = ce.Entity(ud.Vec2d(50.0, 50.0), 1, 0, self.projectiles, self.selected_entities, self.all_entities)
+            entity_two = ce.Entity(ud.Vec2d(100.0, 100.0), 2, 0, self.projectiles, self.selected_entities, self.all_entities)
+            entity_three = ce.Entity(ud.Vec2d(200.0, 200.0), 3, 0, self.projectiles, self.selected_entities, self.all_entities)
+            entity_four = ce.Entity(ud.Vec2d(300.0, 300.0), 4, 0, self.projectiles, self.selected_entities, self.all_entities)
+            entity_five = ce.Entity(ud.Vec2d(400.0, 400.0), 5, 0, self.projectiles, self.selected_entities, self.all_entities)
+            entity_six = ce.Entity(ud.Vec2d(200.0, 100.0), 6, 0, self.projectiles, self.selected_entities, self.all_entities)
 
             return [entity_one, entity_two, entity_three, entity_four, entity_five, entity_six]
         def init_team_two_entities():
-            enemy_entity_one = ce.Entity(ud.Vec2d(100.0, 400.0), 7, 1, self.all_projectiles.laser_shots)
-            enemy_entity_two = ce.Entity(ud.Vec2d(400.0, 100.0), 8, 1, self.all_projectiles.laser_shots)
-            enemy_entity_three = ce.Entity(ud.Vec2d(400.0, 150), 9, 1, self.all_projectiles.laser_shots)
-            enemy_entity_four = ce.Entity(ud.Vec2d(100.0, 450), 10, 1, self.all_projectiles.laser_shots)
-            enemy_entity_five = ce.Entity(ud.Vec2d(150.0, 370), 11, 1, self.all_projectiles.laser_shots)
+            enemy_entity_one = ce.Entity(ud.Vec2d(100.0, 400.0), 7, 1, self.projectiles, self.selected_entities, self.all_entities)
+            enemy_entity_two = ce.Entity(ud.Vec2d(400.0, 100.0), 8, 1, self.projectiles, self.selected_entities, self.all_entities)
+            enemy_entity_three = ce.Entity(ud.Vec2d(400.0, 150), 9, 1, self.projectiles, self.selected_entities, self.all_entities)
+            enemy_entity_four = ce.Entity(ud.Vec2d(100.0, 450), 10, 1, self.projectiles, self.selected_entities, self.all_entities)
+            enemy_entity_five = ce.Entity(ud.Vec2d(150.0, 370), 11, 1, self.projectiles, self.selected_entities, self.all_entities)
 
             return [enemy_entity_one, enemy_entity_two, enemy_entity_three, enemy_entity_four, enemy_entity_five]
 
@@ -59,7 +59,7 @@ class GameEnvironment():
 
     def tick(self):
         self.all_entities.tick()
-        self.all_projectiles.tick()
+        self.projectiles.tick()
 
         #ABSTRACT-into-entities_class
         #if self.track_entity_attack_ranges_enabled:

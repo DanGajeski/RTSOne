@@ -24,30 +24,34 @@ class AllEntities():
             entity.tick()
         #DOUBLE-CHECK-ORDER
         #self.run_entity_attacks()
+
+    #MOVE-TO-ENTITY
     def toggle_entity_attack_attitude(self):
         for entity in self.all:
             if entity.is_attacking():
                 entity.stop_attacking()
             elif not entity.is_attacking():
                 entity.start_attacking()
-
-    # def set_target_vec(self, target_vec: ud.Vec2d):
-    #     self.target_vec = target_vec
-    #     for entity in self.all:
-    #         entity.set_target_vec(self.target_vec)
-    def run_entity_attacks(self):
-        for entity in self.all:
-            for other_entity in self.all:
-                if other_entity.id != entity.id:
-                    if other_entity.team_id != entity.team_id:
-                        entity.check_range_to_other_entity(other_entity)
+            #if entity.is_attacking:
+            #    print(str(entity) + " is attacking!")
 
 
-        for entity in self.all:
-            for other_entity in self.all:
-                if other_entity.id != entity.id:
-                    if other_entity.team_id != entity.team_id:
-                        entity.check_range_to_other_entity(other_entity)
+    #MOVE-AND-UPDATE-TO-SINGLE-ENTITY-RUN_ENTITY_ATTACKS()
+    #def run_entity_attacks(self):
+    #    for entity in self.all:
+    #        for other_entity in self.all:
+    #            if other_entity.id != entity.id:
+    #                if other_entity.team_id != entity.team_id:
+    #                    entity.check_range_to_other_entity(other_entity)
+
+
+    #    for entity in self.all:
+    #        for other_entity in self.all:
+    #            if other_entity.id != entity.id:
+    #                if other_entity.team_id != entity.team_id:
+    #                    entity.check_range_to_other_entity(other_entity)
+
+    #MOVE-AND-UPDATE-TO-SINGLE-ENTITY-MOVE_ENTITY()
     def move_entities(self):
         for entity in self.all:
             for count in range(entity.speed):
@@ -63,8 +67,8 @@ class AllEntities():
                             entity.move_entity_only_y()
                     entity.stop_counter += 0 #TEST-add-to-this-to-re-enable-stop-counter
 
+    #MOVE-TO-ENTITY
     #aabb_blocker_tester_method
-    #UPDATE=-> To include simple x and y movement if multiple entities stuck
     def check_entity_collision(self, entity):
         entity.update_normalizer()
 
@@ -87,6 +91,7 @@ class AllEntities():
 
         return can_move
 
+    #MOVE-TO-ENTITY
     def check_entity_x_collision(self, entity):
         entity.update_normalizer()
 
@@ -103,6 +108,7 @@ class AllEntities():
 
         return can_move
 
+    #MOVE-TO-ENTITY
     def check_entity_y_collision(self, entity):
         entity.update_normalizer()
 

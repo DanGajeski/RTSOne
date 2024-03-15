@@ -396,6 +396,7 @@ class DisplayEnvironment():
         self.canvas.create_image(entity.pos.x, entity.pos.y, image=entity.img, anchor=tk.NW)
 
     def display_laser_shot(self, laser_shot: ls.LaserShot):
+        #print('displaying-laser-shot')
         self.canvas.create_line(laser_shot.laser_pulse_beginning_point_vec.x, laser_shot.laser_pulse_beginning_point_vec.y, laser_shot.laser_pulse_end_point_vec.x, laser_shot.laser_pulse_end_point_vec.y, fill=laser_shot.laser_pulse_color, width=laser_shot.laser_pulse_width)
 
     #UPDATE-AFTER-REFACTOR
@@ -406,7 +407,7 @@ class DisplayEnvironment():
             self.display_entity(entity)
             if not self.game_environment.selected_entities.is_empty():
                 self.highlight_selected_entities()
-        for laser_shot in self.game_environment.all_projectiles.laser_shots:
+        for laser_shot in self.game_environment.projectiles.laser_shots:
                 self.display_laser_shot(laser_shot)
                 #collision_check_UPDATE
 

@@ -1,6 +1,7 @@
 class AllProjectiles():
     def __init__(self):
         #ALL
+        #UPDATE-to-ADD-to-when-laser-shot-is-created-REMOVE-when-laser-shot-is-destroyed
         self.all_projectiles = []
 
         #TYPE-DESTINCTIONS
@@ -14,14 +15,16 @@ class AllProjectiles():
         for projectile in projectiles:
             self.all_projectiles.append(projectile)
 
+    #UPDATE-to-INCLUDE-self.all_projectiles-UPDATE
     def remove_disabled_projectiles(self):
-        for projectile in self.all_projectiles:
+        for laser_shot in self.laser_shots:
             #possibly-optimize-later-to-not-need-to-sort-through-all-projectiles
-            if projectile.disabled():
+            if laser_shot.disabled():
                 #not-yet-used
                 #self.all_projectiles.remove(projectile)
-                self.laser_shots.remove(projectile)
+                self.laser_shots.remove(laser_shot)
 
     def tick(self):
-        for projectile in self.all_projectiles:
-            projectile.tick()
+        for laser_shot in self.laser_shots:
+            laser_shot.tick()
+        self.remove_disabled_projectiles()

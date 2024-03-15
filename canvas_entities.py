@@ -2,9 +2,13 @@ import unit_data as ud
 import time as time
 import dan_math as dm
 import laser_shot as laser_shot
+import selected_entities as se
+import all_entities as ae
+import projectiles as proj
+
 
 class Entity:
-    def __init__(self, Vec2d: ud.Vec2d, id: int, team_id: int, laser_shots):
+    def __init__(self, Vec2d: ud.Vec2d, id: int, team_id: int, projectiles: proj.AllProjectiles, selected_entities: se.SelectedEntities, all_entities: ae.AllEntities):
         self.id = id
         self.team_id: int = team_id
         self.img_info = ud.ImgInfo()
@@ -18,9 +22,15 @@ class Entity:
         #low-level-tick-tied-entity-speed
         self.attack_range: int = 150
         self.speed: int = 6
-        self.laser_shots: list = laser_shots
+
+        #self.laser_shots: list = laser_shots
+        self.projectiles: proj = projectiles
+
         self.aabb = ud.AABB(self.pos.x, self.pos.y, (self.pos.x + self.img_info.img_width), (self.pos.y + self.img_info.img_height))
         self.normalizer: dm.Normalizer
+
+        self.selected_entities: se.SelectedEntities = selected_entities
+        self.all_entities: ae.AllEntities = all_entities
 
         self.attacking: bool = False
         self.laser_on_cooldown: bool = False
@@ -48,7 +58,8 @@ class Entity:
     def tick(self):
         if self.laser_on_cooldown:
             self.track_cooldown()
-
+        if self.attacking:
+            self.run_entity_attacks()
     #def add_to_tick_attack_count(self):
     #    self.attack_tick_counter += 1
 
@@ -115,21 +126,18 @@ class Entity:
 
     #if-check_range_to_other_entity-already-ran
     def shoot_at_entity(self, other_entity):
-        # if self.can_attack:
-        #     #if self.team_id == 0:
-        #     #print(str(self.id) + " is shooting at " + str(other_entity.id))
-        #     self.aabb.find_center_point()
-        #     other_entity.aabb.find_center_point()
-        #
-        #     self.laser_shots.append(laser_shot.LaserShot(self.aabb.center_point, other_entity.aabb.center_point, self.team_id))
-        #     self.can_attack = False
-            #else:
-            #    pass
-
         if not self.laser_on_cooldown:
             self.cooldown_counter_one = time.perf_counter()
             self.aabb.find_center_point()
             other_entity.aabb.find_center_point()
 
-            self.laser_shots.append(laser_shot.LaserShot(self.aabb.center_point, other_entity.aabb.center_point, self.team_id))
+            self.projectiles.laser_shots.append(laser_shot.LaserShot(self.aabb.center_point, other_entity.aabb.center_point, self.team_id))
             self.laser_on_cooldown = True
+
+    def run_entity_attacks(self):
+
+        #for entity in self.all_entities:
+        for other_entity in self.all_entities.all:
+            if other_entity.id != self.id:
+                if other_entity.team_id != self.team_id:
+                    self.check_range_to_other_entity(other_entity)

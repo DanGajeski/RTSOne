@@ -8,7 +8,7 @@ import projectiles as proj
 
 
 class Entity:
-    def __init__(self, Vec2d: ud.Vec2d, id: int, team_id: int, projectiles: proj.AllProjectiles, selected_entities: se.SelectedEntities, all_entities: ae.AllEntities):
+    def __init__(self, Vec2d: ud.Vec2d, id: int, team_id: int, projectiles: proj.AllProjectiles, all_entities: ae.AllEntities):
         self.id = id
         self.team_id: int = team_id
         self.img_info = ud.ImgInfo()
@@ -29,7 +29,6 @@ class Entity:
         self.aabb = ud.AABB(self.pos.x, self.pos.y, (self.pos.x + self.img_info.img_width), (self.pos.y + self.img_info.img_height))
         self.normalizer: dm.Normalizer
 
-        self.selected_entities: se.SelectedEntities = selected_entities
         self.all_entities: ae.AllEntities = all_entities
 
         self.attacking: bool = False

@@ -189,7 +189,7 @@ class DisplayEnvironment():
     #MOVING
     def set_target_movement_location(self):
         #self.target_vec = ud.Vec2d(self.canvas_mouse_location_x, self.canvas_mouse_location_y)
-        self.game_environment.selected_entities.set_target_vec(ud.Vec2d(self.canvas_mouse_location_x, self.canvas_mouse_location_y))
+        self.game_environment.all_entities.set_target_vec_selected(ud.Vec2d(self.canvas_mouse_location_x, self.canvas_mouse_location_y))
 
     def set_display_key_bindings(self):
         self.main_window.bind('<Motion>', lambda event: self.track_mouse_location())
@@ -270,7 +270,7 @@ class DisplayEnvironment():
             self.enable_unit_selector()
 
     def select_entity(self, entity):
-        self.game_environment.selected_entities.add_to_selected_entities(entity)
+        self.game_environment.all_entities.add_to_selected_entities(entity)
 
     def enable_unit_selector(self):
         self.unit_selector_enabled = True
@@ -279,11 +279,11 @@ class DisplayEnvironment():
 
     def make_selection(self):
         #clear-selected-entities-first
-        self.game_environment.selected_entities.remove_all_selected_entities()
+        self.game_environment.all_entities.remove_all_selected_entities()
         for entity in self.game_environment.all_entities.all:
             if self.motion_selection_aabb.check_aabb_in_aabb(entity.aabb):
                 if self.game_environment.player.team_id == entity.team_id:
-                    self.game_environment.selected_entities.add_to_selected_entities(entity)
+                    self.game_environment.all_entities.add_to_selected_entities(entity)
 
     #MOVING
     def enable_track_entity_attack_ranges(self):
@@ -389,7 +389,7 @@ class DisplayEnvironment():
         self.main_window.mainloop()
 
     def highlight_selected_entities(self):
-        for entity in self.game_environment.selected_entities.selected:
+        for entity in self.game_environment.all_entities.selected:
             self.canvas.create_rectangle(entity.aabb.x1, entity.aabb.y1, entity.aabb.x2, entity.aabb.y2, outline='red', width=2)
 
     def display_entity(self, entity: ce.Entity):
@@ -405,7 +405,7 @@ class DisplayEnvironment():
             self.draw_unit_selector()
         for entity in self.game_environment.all_entities.all:
             self.display_entity(entity)
-            if not self.game_environment.selected_entities.is_empty():
+            if not self.game_environment.all_entities.selected_is_empty():
                 self.highlight_selected_entities()
         for laser_shot in self.game_environment.projectiles.laser_shots:
                 self.display_laser_shot(laser_shot)

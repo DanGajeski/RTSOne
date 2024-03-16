@@ -275,7 +275,7 @@ class DisplayEnvironment():
     def enable_unit_selector(self):
         self.unit_selector_enabled = True
         self.motion_selection_aabb.x1 = self.origin_x
-        self.motion_selection_aabb.x2 = self.origin_y
+        self.motion_selection_aabb.y1 = self.origin_y
 
     def make_selection(self):
         #clear-selected-entities-first

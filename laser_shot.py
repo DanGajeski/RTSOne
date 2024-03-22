@@ -1,10 +1,10 @@
 import math as math
 import dan_math as dm
 import unit_data as ud
-
+import all_entities as ae
 
 class LaserShot():
-    def __init__(self, origin_point, target_point, origin_team_id):
+    def __init__(self, origin_point, target_point, origin_team_id, all_entities: ae.AllEntities):
         self.origin_x = origin_point[0]
         self.origin_y = origin_point[1]
         self.origin_vec = ud.Vec2d(self.origin_x, self.origin_y)
@@ -17,6 +17,10 @@ class LaserShot():
         self.laser_pulse_width: int = 3
         self.laser_pulse_length: int = 30
         self.laser_pulse_speed: int = 20
+
+        self.all_entities = all_entities
+        self.damage: int = 1
+        self.one_dmg_per_tick: bool = False
 
         def init_laser_pulse_color():
             #contains-new-att-self.laser_pulse_color
@@ -58,19 +62,19 @@ class LaserShot():
     def update_pulse_end_point(self):
         if self.laser_pulse_end_point_vec.x > self.target_vec.x - 1 and self.laser_pulse_end_point_vec.x < self.target_vec.x + 1 and self.laser_pulse_end_point_vec.y > self.target_vec.y - 1 and self.laser_pulse_end_point_vec.y < self.target_vec.y + 1:
             self.hit_target = True
-            pass
+            if not self.one_dmg_per_tick:
+                self.check_for_laser_entity_contact()
         else:
-        #pass
-        #print(self.laser_normalizer.normalized_x)
-        #print(self.laser_pulse_beginning_point_vec.x)
-        #print(self.laser_pulse_end_point_vec.x)
-        #print(self.laser_pulse_beginning_point_vec.y)
-        #(self.normalizer.normalized_x)
-        #print(self.normalizer.normalized_y)
-        #print("This should be changing:    " + str(self.laser_pulse_end_point_vec.x))
-        #print(str(self.team_id) + "Normalized X : " + str(self.normalized_movement_vec.x))
             self.laser_pulse_end_point_vec.x += self.normalized_movement_vec.x
             self.laser_pulse_end_point_vec.y += self.normalized_movement_vec.y
+
+    def check_for_laser_entity_contact(self):
+        for entity in self.all_entities.all:
+            if entity.aabb.check_xy_in_aabb(self.laser_pulse_end_point_vec.x, self.laser_pulse_end_point_vec.y):
+                entity.receive_damage(self.damage)
+                print('damaging ' + str(entity))
+                self.one_dmg_per_tick = True
+                #print('Receiving damage!')
 
     def update_pulse_beginning_point(self):
         if self.hit_target:
@@ -84,6 +88,7 @@ class LaserShot():
             self.laser_pulse_beginning_point_vec.y += self.normalized_movement_vec.y
 
     def tick(self):
+        self.one_dmg_per_tick = False
         #print(self.origin_target_angle)
         #UPDATE-FOR-COLLISION-CHECK-UNITY-AND-EFFICIENCY
         for speed in range(self.laser_pulse_speed):

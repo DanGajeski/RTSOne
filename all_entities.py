@@ -23,6 +23,7 @@ class AllEntities():
     def tick(self):
         #self.move_entities()
         for entity in self.all:
+            self.monitor_entity_health(entity)
             entity.tick()
         #DOUBLE-CHECK-ORDER
         #self.run_entity_attacks()
@@ -35,7 +36,9 @@ class AllEntities():
             elif not entity.is_attacking():
                 entity.start_attacking()
 
-
+    def monitor_entity_health(self, entity):
+        if not entity.alive:
+            self.remove_entity(entity)
 
     def add_to_selected_entities(self, new_entity):
         self.selected.append(new_entity)

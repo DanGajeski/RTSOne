@@ -12,7 +12,8 @@ class Entity:
         self.id = id
         self.team_id: int = team_id
         self.img_info = ud.ImgInfo()
-        self.health: int = 10
+        self.health: int = 5
+        self.alive: bool = True
         self.pos = Vec2d
         self.img_width = self.img_info.img_width
         self.img_height = self.img_info.img_height
@@ -52,21 +53,31 @@ class Entity:
 
         self.immobile_tick_counter: int = 0
 
-    #REFACTOR=>Pass-In-environments-so-that-entity-tick-handles-shooting-moving//all-entity-actions
-    #REFACTOR==>entity-must-know-of-all-other-entities-and-the-game-environment
     def tick(self):
-        if self.laser_on_cooldown:
-            self.track_cooldown()
-        if self.attacking:
-            self.run_entity_attacks()
-        if not self.check_if_entity_at_target_vec():
-            self.move_entity_check()
+        self.monitor_health()
+        if self.alive:
+            if self.laser_on_cooldown:
+                self.track_cooldown()
+            if self.attacking:
+                self.run_entity_attacks()
+            if not self.check_if_entity_at_target_vec():
+                self.move_entity_check()
 
     #def add_to_tick_attack_count(self):
     #    self.attack_tick_counter += 1
 
     #def reset_tick_attack_count(self):
     #    self.attack_tick_counter = 0
+
+    def monitor_health(self):
+        if self.health <= 0:
+            self.alive = False
+
+    def receive_damage(self, damage: int):
+        print(self.health)
+        print(damage)
+        self.health -= damage
+        #print('Health ' + str(self.health))
 
     def track_cooldown(self):
         self.cooldown_counter_two = time.perf_counter()
@@ -133,7 +144,7 @@ class Entity:
             self.aabb.find_center_point()
             other_entity.aabb.find_center_point()
 
-            self.projectiles.laser_shots.append(laser_shot.LaserShot(self.aabb.center_point, other_entity.aabb.center_point, self.team_id))
+            self.projectiles.laser_shots.append(laser_shot.LaserShot(self.aabb.center_point, other_entity.aabb.center_point, self.team_id, self.all_entities))
             self.laser_on_cooldown = True
 
     def run_entity_attacks(self):

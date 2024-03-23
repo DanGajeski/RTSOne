@@ -20,7 +20,8 @@ class LaserShot():
 
         self.all_entities = all_entities
         self.damage: int = 1
-        self.one_dmg_per_tick: bool = False
+        #self.one_dmg_per_tick: bool = False
+        self.damage_entity_already_id: int = None
 
         def init_laser_pulse_color():
             #contains-new-att-self.laser_pulse_color
@@ -62,19 +63,34 @@ class LaserShot():
     def update_pulse_end_point(self):
         if self.laser_pulse_end_point_vec.x > self.target_vec.x - 1 and self.laser_pulse_end_point_vec.x < self.target_vec.x + 1 and self.laser_pulse_end_point_vec.y > self.target_vec.y - 1 and self.laser_pulse_end_point_vec.y < self.target_vec.y + 1:
             self.hit_target = True
-            if not self.one_dmg_per_tick:
-                self.check_for_laser_entity_contact()
+            #if not self.one_dmg_per_tick:
+            self.check_for_laser_entity_contact()
         else:
             self.laser_pulse_end_point_vec.x += self.normalized_movement_vec.x
             self.laser_pulse_end_point_vec.y += self.normalized_movement_vec.y
 
+    #This function defined to set ONE entity per laser_shot.  This is used to limit laser_shot to only dmg ONE entity ONE time.
+    def set_damage_entity_already_id(self, damaging_entity_id: int):
+        self.damage_entity_already_id = damaging_entity_id
+
     def check_for_laser_entity_contact(self):
         for entity in self.all_entities.all:
             if entity.aabb.check_xy_in_aabb(self.laser_pulse_end_point_vec.x, self.laser_pulse_end_point_vec.y):
-                entity.receive_damage(self.damage)
-                print('damaging ' + str(entity))
-                self.one_dmg_per_tick = True
+                if self.damage_entity_already_id != None:
+                    if entity.id != self.damage_entity_already_id:
+                        entity.receive_damage(self.damage)
+                        self.damage_entity_already_id = entity.id
+                    else:
+                        pass
+                else:
+                    entity.receive_damage(self.damage)
+                    self.damage_entity_already_id = entity.id
+                #print('damaging ' + str(entity))
+                #self.one_dmg_per_tick = True
                 #print('Receiving damage!')
+
+        #works though doesn't have self.one_dmg_per_tick = True
+        #[entity.receive_damage(self.damage) for entity in self.all_entities.all if entity.aabb.check_xy_in_aabb(self.laser_pulse_end_point_vec.x, self.laser_pulse_end_point_vec.y)]
 
     def update_pulse_beginning_point(self):
         if self.hit_target:
@@ -88,9 +104,8 @@ class LaserShot():
             self.laser_pulse_beginning_point_vec.y += self.normalized_movement_vec.y
 
     def tick(self):
-        self.one_dmg_per_tick = False
+        #self.one_dmg_per_tick = False
         #print(self.origin_target_angle)
-        #UPDATE-FOR-COLLISION-CHECK-UNITY-AND-EFFICIENCY
         for speed in range(self.laser_pulse_speed):
             self.update_pulse_end_point()
             self.get_beginning_end_vec_distance()

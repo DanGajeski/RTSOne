@@ -12,19 +12,21 @@ class AllProjectiles():
         self.all_projectiles.append(projectile)
 
     def add_group(self, projectiles):
-        for projectile in projectiles:
-            self.all_projectiles.append(projectile)
+        #for projectile in projectiles:
+        [self.all_projectiles.append(projectile) for projectile in projectiles]
 
     #UPDATE-to-INCLUDE-self.all_projectiles-UPDATE
     def remove_disabled_projectiles(self):
-        for laser_shot in self.laser_shots:
-            #possibly-optimize-later-to-not-need-to-sort-through-all-projectiles
-            if laser_shot.disabled():
-                #not-yet-used
-                #self.all_projectiles.remove(projectile)
-                self.laser_shots.remove(laser_shot)
+        [self.laser_shots.remove(laser_shot) for laser_shot in self.laser_shots if laser_shot.disabled()]
+        # for laser_shot in self.laser_shots:
+        #     #possibly-optimize-later-to-not-need-to-sort-through-all-projectiles
+        #     if laser_shot.disabled():
+        #         #not-yet-used
+        #         #self.all_projectiles.remove(projectile)
+        #         self.laser_shots.remove(laser_shot)
 
     def tick(self):
-        for laser_shot in self.laser_shots:
-            laser_shot.tick()
+        #for laser_shot in self.laser_shots:
+        #    laser_shot.tick()
+        [laser_shot.tick() for laser_shot in self.laser_shots]
         self.remove_disabled_projectiles()

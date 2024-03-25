@@ -5,8 +5,8 @@ import math as math
 
 class ImgInfo():
     def __init__(self):
-        self.img_height: int = 20
-        self.img_width: int = 20
+        self.img_height: int = 20 #CHANGE-to-entity_img_height
+        self.img_width: int = 20 #CHANGE-to-entity-img_width
 
         self.img_folder_path: str = "imgs"
         self.main_character_img_name: str = "happy_guy.png"

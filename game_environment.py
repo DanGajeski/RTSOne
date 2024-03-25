@@ -3,6 +3,7 @@ import selected_entities as selected_entities
 import canvas_entities as ce
 import projectiles as pro
 import unit_data as ud
+import unit_spawner as us
 import player as player
 
 class GameEnvironment():
@@ -11,6 +12,7 @@ class GameEnvironment():
         self.all_entities = all_entities.AllEntities()
         self.target_vec = ud.Vec2d(0.0, 0.0)
         self.player = player.Player(0, 0)#pid:0,teamid:0
+        self.unit_spawner: us.SpawnPoint = None
 
         #ABSTRACT-into-entity-class
         self.track_entity_attack_ranges_enabled: bool = False
@@ -23,6 +25,10 @@ class GameEnvironment():
 
     def set_display_key_bindings(self, main_window):
         main_window.bind('t', lambda event: self.toggle_track_entity_attack_ranges())
+        main_window.bind('p', lambda event: self.create_unit_spawner())
+
+    def create_unit_spawner(self):
+        self.unit_spawner = us.SpawnPoint((150, 150), self.all_entities, self.projectiles)
 
     def toggle_track_entity_attack_ranges(self):
         #UPDATE-FOR-LATER-WHEN-MORE-SPECIFIC-ATTACK-MOVES-ARE-INTEGRATED
@@ -59,6 +65,8 @@ class GameEnvironment():
     def tick(self):
         self.all_entities.tick()
         self.projectiles.tick()
+        if self.unit_spawner:
+            self.unit_spawner.tick()
 
         #ABSTRACT-into-entities_class
         #if self.track_entity_attack_ranges_enabled:

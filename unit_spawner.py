@@ -31,6 +31,7 @@ class SpawnPoint():
         self.track_spawn_cooldown()
 
     def determine_unit_spawn_location(self):
+        self.room_to_spawn = True
         #top-left-point
         x1 = self.location[0]
         y1 = self.location[1]

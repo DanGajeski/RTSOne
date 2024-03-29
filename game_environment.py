@@ -7,12 +7,14 @@ import unit_spawner as us
 import player as player
 
 class GameEnvironment():
+    spawn_point_x: int = 150
+    spawn_point_y: int = 150
     def __init__(self):
         self.projectiles = pro.AllProjectiles()
         self.all_entities = all_entities.AllEntities()
         self.target_vec = ud.Vec2d(0.0, 0.0)
         self.player = player.Player(0, 0)#pid:0,teamid:0
-        self.unit_spawner: us.SpawnPoint = None
+        self.unit_spawner_group = []
 
         #ABSTRACT-into-entity-class
         self.track_entity_attack_ranges_enabled: bool = False
@@ -28,17 +30,26 @@ class GameEnvironment():
         main_window.bind('p', lambda event: self.create_unit_spawner())
 
     def create_unit_spawner(self):
-        self.unit_spawner = us.SpawnPoint((150, 150), self.all_entities, self.projectiles)
+        self.unit_spawner_group.append(us.SpawnPoint((self.spawn_point_x, self.spawn_point_y), self.all_entities, self.projectiles))
+        self.spawn_point_x += 50
+        self.spawn_point_y += 50
+
+    def run_entity_ticks(self):
+        self.all_entities.tick()
+
+    def run_projectile_ticks(self):
+        self.projectiles.tick()
+
+    def run_unit_spawner_ticks(self):
+        if len(self.unit_spawner_group) >= 1:
+            for unit_spawner in self.unit_spawner_group:
+                unit_spawner.tick()
 
     def toggle_track_entity_attack_ranges(self):
         #UPDATE-FOR-LATER-WHEN-MORE-SPECIFIC-ATTACK-MOVES-ARE-INTEGRATED
         self.all_entities.toggle_entity_attack_attitude()
 
         print('toggling-ATTACK-RANGES!!')
-        # if self.track_entity_attack_ranges_enabled:
-        #     self.track_entity_attack_ranges_enabled = False
-        # elif not self.track_entity_attack_ranges_enabled:
-        #     self.track_entity_attack_ranges_enabled = True
 
     def init_all_test_entities(self):
         def init_team_one_entities():
@@ -63,18 +74,9 @@ class GameEnvironment():
         self.all_entities.add_entities(init_team_two_entities())
 
     def tick(self):
-        self.all_entities.tick()
-        self.projectiles.tick()
-        if self.unit_spawner:
-            self.unit_spawner.tick()
-
-        #ABSTRACT-into-entities_class
-        #if self.track_entity_attack_ranges_enabled:
-        #    for entity in self.all_entities.all:
-        #        for other_entity in self.all_entities.all:
-        #            if other_entity.id != entity.id:
-        #                if other_entity.team_id != entity.team_id:
-        #                    entity.check_range_to_other_entity(other_entity)
+        self.run_entity_ticks()
+        self.run_projectile_ticks()
+        self.run_unit_spawner_ticks()
 
         #REWORK-TO-MOVE-ANY-ENTITY-THAT-TARGET_VEC-IS-DIFFERENT-TO-CURRENT_VEC
         #if not self.selected_entities.is_empty():

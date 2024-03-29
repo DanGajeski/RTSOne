@@ -63,7 +63,6 @@ class SpawnPoint():
         elif self.room_to_spawn == False:
             pass
 
-
     def spawn_enemy_entity(self, x1, y1):
         self.all_entities.add_entity(ce.Entity(ud.Vec2d(x1, y1), self.unit_id, self.team_id, self.projectiles, self.all_entities))
         self.unit_id += 1

@@ -7,6 +7,7 @@ import player as player
 import laser_shot as ls
 import dan_math as dm
 import math as math
+import builder_building as bb
 
 
 class DisplayEnvironment():
@@ -399,6 +400,9 @@ class DisplayEnvironment():
         #print('displaying-laser-shot')
         self.canvas.create_line(laser_shot.laser_pulse_beginning_point_vec.x, laser_shot.laser_pulse_beginning_point_vec.y, laser_shot.laser_pulse_end_point_vec.x, laser_shot.laser_pulse_end_point_vec.y, fill=laser_shot.laser_pulse_color, width=laser_shot.laser_pulse_width)
 
+    def display_building(self, building):
+        self.canvas.create_image(building.x, building.y, image=building.img, anchor=tk.NW)
+
     #UPDATE-AFTER-REFACTOR
     def display_all_elements(self):
         if self.unit_selector_enabled:
@@ -409,6 +413,9 @@ class DisplayEnvironment():
                 self.highlight_selected_entities()
         for laser_shot in self.game_environment.projectiles.laser_shots:
                 self.display_laser_shot(laser_shot)
+        if self.game_environment.buildings.all != []:
+            for building in self.game_environment.buildings.all:
+                self.display_building(building)
                 #collision_check_UPDATE
 
             #print('displaying LASER SHOT')

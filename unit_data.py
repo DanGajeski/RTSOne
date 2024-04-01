@@ -7,14 +7,18 @@ class ImgInfo():
     def __init__(self):
         self.img_height: int = 20 #CHANGE-to-entity_img_height
         self.img_width: int = 20 #CHANGE-to-entity-img_width
+        self.builder_building_img_height: int = 40
+        self.builder_building_img_width: int = 40
 
         self.img_folder_path: str = "imgs"
         self.main_character_img_name: str = "happy_guy.png"
         self.player_two_trooper_img_name: str = "mad_guy.png"
+        self.builder_building_img_name: str = "builder_building.png"
         self.img_file_location = Path(__file__).parent/self.img_folder_path
 
         self.main_character_img: ImageTk.PhotoImage = ImageTk.PhotoImage(Image.open(self.img_file_location/self.main_character_img_name))
         self.player_two_trooper_img: ImageTk.PhotoImage = ImageTk.PhotoImage(Image.open(self.img_file_location/self.player_two_trooper_img_name))
+        self.builder_building_img: ImageTk.PhotoImage = ImageTk.PhotoImage(Image.open(self.img_file_location/self.builder_building_img_name))
 
 class Vec2d():
     def __init__(self, x: float, y: float):

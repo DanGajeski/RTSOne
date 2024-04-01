@@ -4,6 +4,8 @@ import canvas_entities as ce
 import projectiles as pro
 import unit_data as ud
 import unit_spawner as us
+import all_buildings as ab
+import builder_building as bb
 import player as player
 
 class GameEnvironment():
@@ -12,6 +14,7 @@ class GameEnvironment():
     def __init__(self):
         self.projectiles = pro.AllProjectiles()
         self.all_entities = all_entities.AllEntities()
+        self.buildings = ab.Buildings()
         self.target_vec = ud.Vec2d(0.0, 0.0)
         self.player = player.Player(0, 0)#pid:0,teamid:0
         self.unit_spawner_group = []
@@ -28,6 +31,7 @@ class GameEnvironment():
     def set_display_key_bindings(self, main_window):
         main_window.bind('t', lambda event: self.toggle_track_entity_attack_ranges())
         main_window.bind('p', lambda event: self.create_unit_spawner())
+        main_window.bind('b', lambda event: self.spawn_building_at_mouse_location())
 
     def create_unit_spawner(self):
         self.unit_spawner_group.append(us.SpawnPoint((self.spawn_point_x, self.spawn_point_y), self.all_entities, self.projectiles))
@@ -39,6 +43,14 @@ class GameEnvironment():
 
     def run_projectile_ticks(self):
         self.projectiles.tick()
+
+    def run_building_ticks(self):
+        self.buildings.tick()
+
+    def spawn_building_at_mouse_location(self):
+        x = self.display_environment.canvas_mouse_location_x
+        y = self.display_environment.canvas_mouse_location_y
+        self.buildings.add_building(bb.Builder_Building(x, y, 0))
 
     def run_unit_spawner_ticks(self):
         if len(self.unit_spawner_group) >= 1:
@@ -77,6 +89,7 @@ class GameEnvironment():
         self.run_entity_ticks()
         self.run_projectile_ticks()
         self.run_unit_spawner_ticks()
+        self.run_building_ticks()
 
         #REWORK-TO-MOVE-ANY-ENTITY-THAT-TARGET_VEC-IS-DIFFERENT-TO-CURRENT_VEC
         #if not self.selected_entities.is_empty():

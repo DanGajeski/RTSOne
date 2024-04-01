@@ -50,7 +50,7 @@ class GameEnvironment():
     def spawn_building_at_mouse_location(self):
         x = self.display_environment.canvas_mouse_location_x
         y = self.display_environment.canvas_mouse_location_y
-        self.buildings.add_building(bb.Builder_Building(x, y, 0))
+        self.buildings.add_building(bb.Builder_Building(x, y, 0, self.all_entities, self.projectiles))
 
     def run_unit_spawner_ticks(self):
         if len(self.unit_spawner_group) >= 1:

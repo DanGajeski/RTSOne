@@ -14,11 +14,10 @@ class Builder_Building:
 
         self.init_spawn_point()
 
-
     def tick(self):
         if self.spawn_point != None:
             self.spawn_point.tick()
 
     def init_spawn_point(self):
         location_tuple: tuple = (self.x, self.y)
-        self.spawn_point = us.SpawnPoint(location_tuple, self.all_entities, self.projectiles)
+        self.spawn_point = us.SpawnPoint(location_tuple, self.all_entities, self.projectiles, self.team_id)

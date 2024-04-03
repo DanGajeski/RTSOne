@@ -6,7 +6,7 @@ import time as time
 
 class SpawnPoint():
     unit_id: int = 0
-    def __init__(self, location: tuple, all_entities: ae.AllEntities, projectiles: pro.AllProjectiles):
+    def __init__(self, location: tuple, all_entities: ae.AllEntities, projectiles: pro.AllProjectiles, team_id: int):
         self.location = location
 
         self.all_entities = all_entities
@@ -17,7 +17,7 @@ class SpawnPoint():
         self.spawn_cooldown: float = 5.0
         self.spawn_on_cooldown: bool = False
 
-        self.team_id = 1#enemy-team
+        self.team_id = team_id#enemy-team
 
         self.unit_spawn_location: tuple = None
         self.img_info = ud.ImgInfo()

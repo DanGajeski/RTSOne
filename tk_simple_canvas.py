@@ -34,16 +34,19 @@ class DisplayEnvironment():
         self.canvas_vertical_stripe_color: str = "#FFFFFF"
         self.canvas_horitontal_stripe_color: str = "#000000"
 
+        #MAIN-UI-ELEMENT
         #init_window
         self.main_window = tk.Tk()
         self.main_window.geometry(self.main_window_dimensions_geometry_formatted)
         self.main_window.title(self.main_window_title_text)
 
+        #GAME-UI-ELEMENTS
         #init_frame
         self.display_frame = tk.Frame(self.main_window, width=self.main_window_width - self.display_frame_main_window_offset*2, height=self.main_window_height - self.display_frame_main_window_offset*2)
         self.display_frame.place(x=self.display_frame_main_window_offset, y=self.display_frame_main_window_offset)
         self.display_frame_aabb: ud.AABB = ud.AABB(0, 0, self.display_frame.winfo_reqwidth(), self.display_frame.winfo_reqheight())
 
+        #GAME-UI-ELEMENTS
         #init_canvas
         self.canvas = tk.Canvas(self.display_frame, bg=self.canvas_bg_color, width=self.map_width, height=self.map_height)
         self.canvas.place(x=self.canvas_x_placement,y=self.canvas_y_placement)

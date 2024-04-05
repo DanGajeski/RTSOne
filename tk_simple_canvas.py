@@ -8,7 +8,8 @@ import laser_shot as ls
 import dan_math as dm
 import math as math
 import builder_building as bb
-import start_screen as ss
+#import start_screen as ss
+import pause_menu_screen as pms
 
 
 class DisplayEnvironment():
@@ -40,6 +41,9 @@ class DisplayEnvironment():
         self.main_window = tk.Tk()
         self.main_window.geometry(self.main_window_dimensions_geometry_formatted)
         self.main_window.title(self.main_window_title_text)
+
+        self.display_environment_tick_enabled: bool = True
+        self.pause_menu_ui: pms.PauseScreenUI = None
 
         #GAME-UI-ELEMENTS
         #init_frame
@@ -202,13 +206,24 @@ class DisplayEnvironment():
         self.main_window.bind('<Button-1>', lambda event: self.set_unit_selector_origin())
         self.main_window.bind('<ButtonRelease-1>', lambda event: self.button_release_checks())
         self.main_window.bind('l', lambda event: self.lock_cursor_to_frame())
+
+        self.main_window.bind('<Escape>', lambda event: self.toggle_pause_menu_ui())
         #self.main_window.bind('t', lambda event: self.enable_track_entity_attack_ranges())
         #self.main_window.bind('<Up>', lambda event: self.move_display_frame_up())
         #self.main_window.bind('<Left>', lambda event: self.move_display_frame_left())
         #self.main_window.bind('<Right>', lambda event: self.move_display_frame_right())
         #self.main_window.bind('<Down>', lambda event: self.move_display_frame_down())
 
-
+    def toggle_pause_menu_ui(self):
+        if self.pause_menu_ui:
+            self.display_environment_tick_enabled = True
+            self.pause_menu_ui.pause_screen_display_frame.place_forget()
+            self.pause_menu_ui = None
+            self.game_environment.toggle_game_environment_tick()
+        elif not self.pause_menu_ui:
+            self.pause_menu_ui = pms.PauseScreenUI(self)
+            self.display_environment_tick_enabled = False
+            self.game_environment.toggle_game_environment_tick()
 
     def track_mouse_location(self):
         #new_VALS
@@ -428,14 +443,15 @@ class DisplayEnvironment():
 
     def tick(self):
         #self.main_window.after(60, self.tick)
-        self.canvas.delete('all')
-        self.update_canvas_frame_placement()
-        self.draw_map_stripes_background()
+        if self.display_environment_tick_enabled:
+            self.canvas.delete('all')
+            self.update_canvas_frame_placement()
+            self.draw_map_stripes_background()
 
-        self.track_mouse_location()
-        self.restrict_mouse_within_display_area()
+            self.track_mouse_location()
+            self.restrict_mouse_within_display_area()
 
-        self.display_all_elements()
+            self.display_all_elements()
 
         #moving-to-game_environment
         #MOVING

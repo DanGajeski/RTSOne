@@ -21,6 +21,7 @@ class GameEnvironment():
 
         #ABSTRACT-into-entity-class
         self.track_entity_attack_ranges_enabled: bool = False
+        self.game_environment_tick_enabled: bool = True
 
         self.init_all_test_entities()
 
@@ -37,6 +38,12 @@ class GameEnvironment():
         self.unit_spawner_group.append(us.SpawnPoint((self.spawn_point_x, self.spawn_point_y), self.all_entities, self.projectiles))
         self.spawn_point_x += 50
         self.spawn_point_y += 50
+
+    def toggle_game_environment_tick(self):
+        if self.game_environment_tick_enabled:
+            self.game_environment_tick_enabled = False
+        elif not self.game_environment_tick_enabled:
+            self.game_environment_tick_enabled = True
 
     def run_entity_ticks(self):
         self.all_entities.tick()

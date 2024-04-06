@@ -93,10 +93,12 @@ class GameEnvironment():
         self.all_entities.add_entities(init_team_two_entities())
 
     def tick(self):
-        self.run_entity_ticks()
-        self.run_projectile_ticks()
-        self.run_unit_spawner_ticks()
-        self.run_building_ticks()
+        if self.game_environment_tick_enabled:
+            self.run_entity_ticks()
+            self.run_projectile_ticks()
+            self.run_unit_spawner_ticks()
+            self.run_building_ticks()
+
 
         #REWORK-TO-MOVE-ANY-ENTITY-THAT-TARGET_VEC-IS-DIFFERENT-TO-CURRENT_VEC
         #if not self.selected_entities.is_empty():

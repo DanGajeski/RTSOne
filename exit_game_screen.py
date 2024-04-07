@@ -3,7 +3,7 @@ import tkinter as tk
 import unit_data as ud
 
 class ExitGameUI:
-    def __init__(self, display_environment: tsc.DisplayEnvironment):
+    def __init__(self, display_environment):
         self.display_environment = display_environment
 
         self.exit_game_screen_canvas_bg_color = "#00FF00"#red

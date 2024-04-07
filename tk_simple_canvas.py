@@ -56,9 +56,24 @@ class DisplayEnvironment():
 
         #GAME-UI-ELEMENTS
         #init_canvas
-        self.canvas = tk.Canvas(self.display_frame, bg=self.canvas_bg_color, width=self.map_width, height=self.map_height)
-        self.canvas.place(x=self.canvas_x_placement,y=self.canvas_y_placement)
-        self.canvas_aabb: ud.AABB = ud.AABB(0, 0, self.canvas.winfo_reqwidth(), self.canvas.winfo_reqheight())
+        #self.canvas = tk.Canvas(self.display_frame, bg=self.canvas_bg_color, width=self.map_width, height=self.map_height)
+        #self.canvas.place(x=self.canvas_x_placement,y=self.canvas_y_placement)
+        #self.canvas_aabb: ud.AABB = ud.AABB(0, 0, self.canvas.winfo_reqwidth(), self.canvas.winfo_reqheight())
+
+        self.game_display_environment_enabled: bool = False
+        self.game_display_environment_keybindings_set: bool = False
+
+        self.start_screen_environment_enabled: bool = False
+        self.start_screen_environment_keybindings_set: bool = False
+        self.start_screen_environment: None
+
+        self.main_menu_screen_environment_enabled: bool = False
+        self.main_menu_screen_environment_keybindings_set: bool = False
+        self.main_menu_screen_environment: None
+
+        self.exit_game_screen_environment_enabled: bool = False
+        self.exit_game_screen_environment_keybindings_set: bool = False
+        self.exit_game_screen_environment: None
 
         #MOVING
         #MOVE-GAMEENVIRONMENT
@@ -122,6 +137,30 @@ class DisplayEnvironment():
         #self.set_window_bindings()
         #change-to-call-tick-from-rts-main?
         #self.tick()
+
+        self.enable_start_screen_environment()
+        #self.enable_game_display_environment()
+
+    def enable_game_display_environment(self):
+        self.game_display_environment_enabled = True
+        #GAME-UI-ELEMENTS
+        #init_frame
+        #self.display_frame = tk.Frame(self.main_window, width=self.main_window_width - self.display_frame_main_window_offset*2, height=self.main_window_height - self.display_frame_main_window_offset*2)
+        #self.display_frame.place(x=self.display_frame_main_window_offset, y=self.display_frame_main_window_offset)
+        #self.display_frame_aabb: ud.AABB = ud.AABB(0, 0, self.display_frame.winfo_reqwidth(), self.display_frame.winfo_reqheight())
+
+        #GAME-UI-ELEMENTS
+        #init_canvas
+        self.canvas = tk.Canvas(self.display_frame, bg=self.canvas_bg_color, width=self.map_width, height=self.map_height)
+        self.canvas.place(x=self.canvas_x_placement,y=self.canvas_y_placement)
+        self.canvas_aabb: ud.AABB = ud.AABB(0, 0, self.canvas.winfo_reqwidth(), self.canvas.winfo_reqheight())
+
+    def enable_start_screen_environment(self):
+        self.start_screen_environment = ss.StartScreenUI(self)
+
+    def disable_start_screen_environment(self):
+        self.start_screen_environment.remove_environment()
+        self.start_screen_environment = None
 
     #attach-to-game-environment
     def import_game_environment(self, game_environment):
@@ -204,6 +243,8 @@ class DisplayEnvironment():
         self.game_environment.all_entities.set_target_vec_selected(ud.Vec2d(self.canvas_mouse_location_x, self.canvas_mouse_location_y))
 
     def set_display_key_bindings(self):
+        self.game_display_environment_keybindings_set = True
+
         self.main_window.bind('<Motion>', lambda event: self.track_mouse_location())
         self.main_window.bind('<Button-3>', lambda event: self.set_target_movement_location())
         self.main_window.bind('<Button-1>', lambda event: self.set_unit_selector_origin())
@@ -216,6 +257,11 @@ class DisplayEnvironment():
         #self.main_window.bind('<Left>', lambda event: self.move_display_frame_left())
         #self.main_window.bind('<Right>', lambda event: self.move_display_frame_right())
         #self.main_window.bind('<Down>', lambda event: self.move_display_frame_down())
+
+    def check_for_key_binding_set_parameters(self):
+        if self.game_display_environment_enabled:
+            if not self.game_display_environment_keybindings_set:
+                self.set_display_key_bindings()
 
     def toggle_pause_menu_ui(self):
         if self.pause_menu_ui:
@@ -448,6 +494,7 @@ class DisplayEnvironment():
         #self.main_window.after(60, self.tick)
         if self.display_environment_tick_enabled:
             self.canvas.delete('all')
+            self.check_for_key_binding_set_parameters()
             self.update_canvas_frame_placement()
             self.draw_map_stripes_background()
 

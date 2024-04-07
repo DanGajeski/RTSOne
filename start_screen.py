@@ -3,9 +3,9 @@ import tkinter as tk
 import unit_data as ud
 
 class StartScreenUI:
-    def __init__(self, display_environment: tsc.DisplayEnvironment):
+    def __init__(self, display_environment):
         self.display_environment = display_environment
-        self.start_screen_canvas_bg_color = "0000FF"
+        self.start_screen_canvas_bg_color = "#0000FF"
         self.start_screen_canvas_x_placement: int = 0
         self.start_screen_canvas_y_placement: int = 0
 
@@ -16,5 +16,9 @@ class StartScreenUI:
         self.start_screen_canvas = tk.Canvas(self.start_screen_display_frame, bg=self.start_screen_canvas_bg_color, width=self.display_environment.map_width, height=self.display_environment.map_height)
         self.start_screen_canvas.place(x=self.start_screen_canvas_x_placement,y=self.start_screen_canvas_y_placement)
         self.start_screen_canvas_aabb: ud.AABB = ud.AABB(0, 0, self.start_screen_canvas.winfo_reqwidth(), self.start_screen_canvas.winfo_reqheight())
+
+    def remove_environment(self):
+        self.start_screen_canvas.place_forget()
+        self.start_screen_display_frame.place_forget()
 
         #next-up->need to add switching functionality to display_environment + game_environment

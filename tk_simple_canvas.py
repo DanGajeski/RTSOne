@@ -45,8 +45,7 @@ class DisplayEnvironment():
         self.main_window.geometry(self.main_window_dimensions_geometry_formatted)
         self.main_window.title(self.main_window_title_text)
 
-        self.display_environment_tick_enabled: bool = True
-        self.pause_menu_ui: pms.PauseScreenUI = None
+
 
         #GAME-UI-ELEMENTS
         #init_frame
@@ -132,6 +131,9 @@ class DisplayEnvironment():
 
         #MOVING
         self.track_entity_attack_ranges_enabled: bool = False
+
+        self.display_environment_tick_enabled: bool = False
+        self.pause_menu_ui: pms.PauseScreenUI = None
         #Switch-to-All_Entities class
 
         #self.set_window_bindings()
@@ -167,8 +169,8 @@ class DisplayEnvironment():
         self.game_environment = game_environment
 
         #INITIAL-DISPLAY-CALL
-        for entity in self.game_environment.all_entities.all:
-            self.display_entity(entity)
+        #for entity in self.game_environment.all_entities.all:
+        #    self.display_entity(entity)
 
     #for-key_bindings
     def get_main_window(self):
@@ -380,6 +382,7 @@ class DisplayEnvironment():
         return (new_windows_x, new_windows_y)
 
     #intotal-restricts-mouse-to-display-frame-and-scrolls-display-frame-dependent-on-scroll-speed
+    #plan->for-update-to-only-allow-movement-within-game-environment-frame
     def restrict_mouse_within_display_area(self):
         if self.mouse_border_monitoring:
             if self.display_frame_aabb.check_xy_in_aabb(self.display_frame_mouse_location_point[0], self.display_frame_mouse_location_point[1]):

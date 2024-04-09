@@ -14,7 +14,7 @@ class RTSMain:
 
         #for-key_bindings
         self.main_window = self.display_environment.get_main_window()
-        #self.display_environment.set_display_key_bindings()#don'tneedtopass-here-because-main_window-comes-from-display_environment
+        self.display_environment.set_display_key_bindings()#don'tneedtopass-here-because-main_window-comes-from-display_environment
         #self.game_environment.set_display_key_bindings(self.main_window)
 
     def tick(self):

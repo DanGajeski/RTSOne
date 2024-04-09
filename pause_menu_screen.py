@@ -19,3 +19,7 @@ class PauseScreenUI:
         self.pause_screen_canvas = tk.Canvas(self.pause_screen_display_frame, bg=self.pause_screen_canvas_bg_color, width=self.display_environment.map_width, height=self.display_environment.map_height)
         self.pause_screen_canvas.place(x=self.pause_screen_canvas_x_placement,y=self.pause_screen_canvas_y_placement)
         self.pause_screen_canvas_aabb: ud.AABB = ud.AABB(0, 0, self.pause_screen_canvas.winfo_reqwidth(), self.pause_screen_canvas.winfo_reqheight())
+
+    def remove_environment(self):
+        self.pause_screen_canvas.place_forget()
+        self.pause_screen_display_frame.place_forget()

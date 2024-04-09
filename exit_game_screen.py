@@ -20,3 +20,7 @@ class ExitGameUI:
         self.exit_game_screen_canvas = tk.Canvas(self.exit_game_screen_display_frame, bg=self.exit_game_screen_canvas_bg_color, width=self.display_environment.map_width, height=self.display_environment.map_height)
         self.exit_game_screen_canvas.place(x=self.exit_game_screen_canvas_x_placement,y=self.exit_game_screen_canvas_y_placement)
         self.exit_game_screen_canvas_aabb: ud.AABB = ud.AABB(0, 0, self.exit_game_screen_canvas.winfo_reqwidth(), self.exit_game_screen_canvas.winfo_reqheight())
+
+    def remove_environment(self):
+        self.exit_game_screen_canvas.place_forget()
+        self.exit_game_screen_display_frame.place_forget()

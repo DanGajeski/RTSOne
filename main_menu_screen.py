@@ -20,3 +20,7 @@ class MainMenuUI:
         self.main_menu_canvas = tk.Canvas(self.main_menu_display_frame, bg=self.main_menu_canvas_bg_color, width=self.display_environment.map_width, height=self.display_environment.map_height)
         self.main_menu_canvas.place(x=self.main_menu_canvas_x_placement,y=self.main_menu_canvas_y_placement)
         self.main_menu_canvas_aabb: ud.AABB = ud.AABB(0, 0, self.main_menu_canvas.winfo_reqwidth(), self.main_menu_canvas.winfo_reqheight())
+
+    def remove_environment(self):
+        self.main_menu_canvas.place_forget()
+        self.main_menu_display_frame.place_forget()

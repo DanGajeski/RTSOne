@@ -46,7 +46,6 @@ class DisplayEnvironment():
         self.main_window.title(self.main_window_title_text)
 
 
-
         #GAME-UI-ELEMENTS
         #init_frame
         self.display_frame = tk.Frame(self.main_window, width=self.main_window_width - self.display_frame_main_window_offset*2, height=self.main_window_height - self.display_frame_main_window_offset*2)
@@ -134,14 +133,17 @@ class DisplayEnvironment():
 
         self.display_environment_tick_enabled: bool = False
         self.pause_menu_ui: pms.PauseScreenUI = None
+        self.start_screen_ui: ss.StartScreenUI = None
+        self.main_menu_screen_ui: mms.MainMenuUI = None
+        self.exit_game_screen_ui: egs.ExitGameUI = None
         #Switch-to-All_Entities class
 
         #self.set_window_bindings()
         #change-to-call-tick-from-rts-main?
         #self.tick()
 
-        self.enable_start_screen_environment()
-        #self.enable_game_display_environment()
+        #self.enable_start_screen_environment()
+        self.enable_game_display_environment()
 
     def enable_game_display_environment(self):
         self.game_display_environment_enabled = True
@@ -254,11 +256,86 @@ class DisplayEnvironment():
         self.main_window.bind('l', lambda event: self.lock_cursor_to_frame())
 
         self.main_window.bind('<Escape>', lambda event: self.toggle_pause_menu_ui())
+
+        self.main_window.bind('<Key-1>', lambda event: self.swap_to_start_screen_ui())
+        self.main_window.bind('<Key-2>', lambda event: self.swap_to_main_menu_screen_ui())
+        self.main_window.bind('<Key-3>', lambda event: self.swap_to_game_display_environment_ui())
+        self.main_window.bind('<Key-4>', lambda event: self.swap_to_exit_game_screen_ui())
+
         #self.main_window.bind('t', lambda event: self.enable_track_entity_attack_ranges())
         #self.main_window.bind('<Up>', lambda event: self.move_display_frame_up())
         #self.main_window.bind('<Left>', lambda event: self.move_display_frame_left())
         #self.main_window.bind('<Right>', lambda event: self.move_display_frame_right())
         #self.main_window.bind('<Down>', lambda event: self.move_display_frame_down())
+
+
+    def swap_to_start_screen_ui(self):
+        print('SWAPPING UI')
+        if self.main_menu_screen_ui:
+            self.unload_main_menu_screen_ui()
+        elif self.exit_game_screen_ui:
+            self.unload_exit_game_screen_ui()
+        elif self.canvas:
+            self.unload_game_display_environment_ui()
+        elif self.start_screen_ui:
+            pass
+        elif not self.start_screen_ui:
+            self.start_screen_ui = ss.StartScreenUI(self)
+
+
+        #def toggle_pause_menu_ui(self):
+        #    if self.pause_menu_ui:
+        #        self.display_environment_tick_enabled = True
+        #        self.pause_menu_ui.pause_screen_display_frame.place_forget()
+        #        self.pause_menu_ui = None
+        #        self.game_environment.toggle_game_environment_tick()
+        #    elif not self.pause_menu_ui:
+        #        self.pause_menu_ui = pms.PauseScreenUI(self)
+        #        self.display_environment_tick_enabled = False
+        #        self.game_environment.toggle_game_environment_tick()
+    def unload_start_screen_ui(self):
+        self.start_screen_ui.remove_environment()
+    def swap_to_main_menu_screen_ui(self):
+        if self.start_screen_ui:
+            self.unload_main_menu_screen_ui()
+        elif self.exit_game_screen_ui:
+            self.unload_exit_game_screen_ui()
+        elif self.canvas:
+            self.unload_game_display_environment_ui()
+        elif self.main_menu_screen_ui:
+            pass
+        elif not self.main_menu_screen_ui:
+            self.main_menu_screen_ui = mms.MainMenuUI(self)
+    def unload_main_menu_screen_ui(self):
+        self.main_menu_screen_ui.remove_environment()
+    def swap_to_game_display_environment_ui(self):
+        if self.start_screen_ui:
+            self.unload_start_screen_ui()
+        elif self.exit_game_screen_ui:
+            self.unload_exit_game_screen_ui()
+        elif self.main_menu_screen_ui:
+            self.unload_main_menu_screen_ui()
+        elif self.canvas:
+            pass
+        elif not self.canvas:
+            self.enable_game_display_environment()
+    def unload_game_display_environment_ui(self):
+        #update-into-own-method
+        self.canvas.place_forget()
+        self.canavs: tk.Canvas = None
+    def swap_to_exit_game_screen_ui(self):
+        if self.main_menu_screen_ui:
+            self.unload_main_menu_screen_ui()
+        elif self.start_screen_ui:
+            self.unload_start_screen_ui()
+        elif self.canvas:
+            self.unload_game_display_environment_ui()
+        elif self.exit_game_screen_ui:
+            pass
+        elif not self.exit_game_screen_ui:
+            self.exit_game_screen_ui = egs.ExitGameUI(self)
+    def unload_exit_game_screen_ui(self):
+        self.exit_game_screen_ui.remove_environment()
 
     def check_for_key_binding_set_parameters(self):
         if self.game_display_environment_enabled:

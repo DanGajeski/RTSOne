@@ -70,6 +70,10 @@ class GameEnvironment():
 
         print('toggling-ATTACK-RANGES!!')
 
+    def reset_game_environment(self):
+        self.all_entities.remove_all_entities()
+        self.init_all_test_entities()
+
     def init_all_test_entities(self):
         def init_team_one_entities():
             entity_one = ce.Entity(ud.Vec2d(50.0, 50.0), 1, 0, self.projectiles, self.all_entities)

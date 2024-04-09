@@ -1,4 +1,6 @@
 import tkinter as tk
+
+import game_environment
 import unit_data as ud
 import canvas_entities as ce
 import selected_entities as se
@@ -72,6 +74,8 @@ class DisplayEnvironment():
         self.exit_game_screen_environment_enabled: bool = False
         self.exit_game_screen_environment_keybindings_set: bool = False
         self.exit_game_screen_environment: None
+
+        self.game_environment: game_environment.GameEnvironment = None
 
         #MOVING
         #MOVE-GAMEENVIRONMENT
@@ -147,6 +151,7 @@ class DisplayEnvironment():
 
     def enable_game_display_environment(self):
         self.game_display_environment_enabled = True
+        self.display_environment_tick_enabled = True
         #GAME-UI-ELEMENTS
         #init_frame
         #self.display_frame = tk.Frame(self.main_window, width=self.main_window_width - self.display_frame_main_window_offset*2, height=self.main_window_height - self.display_frame_main_window_offset*2)
@@ -158,6 +163,8 @@ class DisplayEnvironment():
         self.canvas = tk.Canvas(self.display_frame, bg=self.canvas_bg_color, width=self.map_width, height=self.map_height)
         self.canvas.place(x=self.canvas_x_placement,y=self.canvas_y_placement)
         self.canvas_aabb: ud.AABB = ud.AABB(0, 0, self.canvas.winfo_reqwidth(), self.canvas.winfo_reqheight())
+        if self.game_environment:
+            self.game_environment.toggle_game_environment_tick()
 
     def enable_start_screen_environment(self):
         self.start_screen_environment = ss.StartScreenUI(self)
@@ -309,6 +316,8 @@ class DisplayEnvironment():
     def unload_main_menu_screen_ui(self):
         self.main_menu_screen_ui.remove_environment()
     def swap_to_game_display_environment_ui(self):
+        print('swapping-to-display-environment')
+        print(self.canvas)
         if self.start_screen_ui:
             self.unload_start_screen_ui()
         elif self.exit_game_screen_ui:
@@ -316,13 +325,21 @@ class DisplayEnvironment():
         elif self.main_menu_screen_ui:
             self.unload_main_menu_screen_ui()
         elif self.canvas:
+            print('PASSING')
             pass
         elif not self.canvas:
+            print('CREATING')
             self.enable_game_display_environment()
     def unload_game_display_environment_ui(self):
-        #update-into-own-method
+        #update-into-own-
+        #print('UNLOADING DISPLAY ENVIRONMENT')
+        self.game_environment.toggle_game_environment_tick()
         self.canvas.place_forget()
-        self.canavs: tk.Canvas = None
+        #print(self.canvas)
+        self.canvas: tk.Canvas = None
+        self.game_environment.reset_game_environment()
+        #print(self.canvas)
+        self.display_environment_tick_enabled = False
     def swap_to_exit_game_screen_ui(self):
         if self.main_menu_screen_ui:
             self.unload_main_menu_screen_ui()

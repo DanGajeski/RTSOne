@@ -49,6 +49,9 @@ class AllEntities():
     def remove_all_selected_entities(self):
         self.selected = []
 
+    def remove_all_entities(self):
+        self.all = []
+
     def selected_is_empty(self):
         return self.selected == []
 

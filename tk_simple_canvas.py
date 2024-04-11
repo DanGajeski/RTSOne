@@ -284,9 +284,11 @@ class DisplayEnvironment():
             self.unload_exit_game_screen_ui()
         elif self.canvas:
             self.unload_game_display_environment_ui()
-        elif self.start_screen_ui:
+        if self.start_screen_ui:
+            print('PASSING')
             pass
         elif not self.start_screen_ui:
+            print('CREATING')
             self.start_screen_ui = ss.StartScreenUI(self)
 
 

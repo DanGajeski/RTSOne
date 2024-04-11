@@ -140,6 +140,8 @@ class DisplayEnvironment():
         self.start_screen_ui: ss.StartScreenUI = None
         self.main_menu_screen_ui: mms.MainMenuUI = None
         self.exit_game_screen_ui: egs.ExitGameUI = None
+
+        self.game_environment_reset: bool = True
         #Switch-to-All_Entities class
 
         #self.set_window_bindings()
@@ -284,6 +286,7 @@ class DisplayEnvironment():
             self.unload_exit_game_screen_ui()
         elif self.canvas:
             self.unload_game_display_environment_ui()
+
         if self.start_screen_ui:
             print('PASSING')
             pass
@@ -304,19 +307,22 @@ class DisplayEnvironment():
         #        self.game_environment.toggle_game_environment_tick()
     def unload_start_screen_ui(self):
         self.start_screen_ui.remove_environment()
+        self.start_screen_ui = None
     def swap_to_main_menu_screen_ui(self):
         if self.start_screen_ui:
-            self.unload_main_menu_screen_ui()
+            self.unload_start_screen_ui()
         elif self.exit_game_screen_ui:
             self.unload_exit_game_screen_ui()
         elif self.canvas:
             self.unload_game_display_environment_ui()
-        elif self.main_menu_screen_ui:
+
+        if self.main_menu_screen_ui:
             pass
         elif not self.main_menu_screen_ui:
             self.main_menu_screen_ui = mms.MainMenuUI(self)
     def unload_main_menu_screen_ui(self):
         self.main_menu_screen_ui.remove_environment()
+        self.main_menu_screen_ui = None
     def swap_to_game_display_environment_ui(self):
         print('swapping-to-display-environment')
         print(self.canvas)
@@ -326,7 +332,8 @@ class DisplayEnvironment():
             self.unload_exit_game_screen_ui()
         elif self.main_menu_screen_ui:
             self.unload_main_menu_screen_ui()
-        elif self.canvas:
+
+        if self.canvas:
             print('PASSING')
             pass
         elif not self.canvas:
@@ -349,12 +356,14 @@ class DisplayEnvironment():
             self.unload_start_screen_ui()
         elif self.canvas:
             self.unload_game_display_environment_ui()
-        elif self.exit_game_screen_ui:
+
+        if self.exit_game_screen_ui:
             pass
         elif not self.exit_game_screen_ui:
             self.exit_game_screen_ui = egs.ExitGameUI(self)
     def unload_exit_game_screen_ui(self):
         self.exit_game_screen_ui.remove_environment()
+        self.exit_game_screen_ui = None
 
     def check_for_key_binding_set_parameters(self):
         if self.game_display_environment_enabled:

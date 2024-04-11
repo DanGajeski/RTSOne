@@ -6,7 +6,7 @@ class ExitGameUI:
     def __init__(self, display_environment):
         self.display_environment = display_environment
 
-        self.exit_game_screen_canvas_bg_color = "#00FF00"#red
+        self.exit_game_screen_canvas_bg_color = "#FF0000"#red
         self.exit_game_screen_canvas_x_placement: int = 0
         self.exit_game_screen_canvas_y_placement: int = 0
 

@@ -21,4 +21,9 @@ class StartScreenUI:
         self.start_screen_canvas.place_forget()
         self.start_screen_display_frame.place_forget()
 
-        #next-up->need to add switching functionality to display_environment + game_environment
+    def play_start_animation(self):
+        pass
+        #use_perf_timer
+
+    def transition_to_main_menu_ui(self):
+        self.display_environment.swap_to_main_menu_screen_ui()

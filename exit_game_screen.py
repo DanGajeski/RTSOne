@@ -10,9 +10,6 @@ class ExitGameUI:
         self.exit_game_screen_canvas_x_placement: int = 0
         self.exit_game_screen_canvas_y_placement: int = 0
 
-        #self.pause_screen_display_frame_width: float = float(self.display_environment.main_window_width) / 2.0 - self.display_environment.display_frame_main_window_offset * 2
-        #self.pause_screen_display_frame_height: float = float(self.display_environment.main_window_height) / 2.0 - self.display_environment.display_frame_main_window_offset * 2
-
         self.exit_game_screen_display_frame = tk.Frame(self.display_environment.main_window, width=self.display_environment.main_window_width - self.display_environment.display_frame_main_window_offset*2, height=self.display_environment.main_window_height - self.display_environment.display_frame_main_window_offset*2)
         self.exit_game_screen_display_frame.place(x=self.display_environment.display_frame_main_window_offset, y=self.display_environment.display_frame_main_window_offset)
         self.exit_game_screen_display_frame_aabb: ud.AABB = ud.AABB(0, 0, self.exit_game_screen_display_frame.winfo_reqwidth(), self.exit_game_screen_display_frame.winfo_reqheight())
@@ -24,3 +21,10 @@ class ExitGameUI:
     def remove_environment(self):
         self.exit_game_screen_canvas.place_forget()
         self.exit_game_screen_display_frame.place_forget()
+
+    def play_exit_animation(self):
+        pass
+        #use_perf_timer
+
+    def transition_to_closing_program(self):
+        pass

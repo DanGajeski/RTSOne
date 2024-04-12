@@ -10,9 +10,6 @@ class MainMenuUI:
         self.main_menu_canvas_x_placement: int = 0
         self.main_menu_canvas_y_placement: int = 0
 
-        #self.pause_screen_display_frame_width: float = float(self.display_environment.main_window_width) / 2.0 - self.display_environment.display_frame_main_window_offset * 2
-        #self.pause_screen_display_frame_height: float = float(self.display_environment.main_window_height) / 2.0 - self.display_environment.display_frame_main_window_offset * 2
-
         self.main_menu_display_frame = tk.Frame(self.display_environment.main_window, width=self.display_environment.main_window_width - self.display_environment.display_frame_main_window_offset*2, height=self.display_environment.main_window_height - self.display_environment.display_frame_main_window_offset*2)
         self.main_menu_display_frame.place(x=self.display_environment.display_frame_main_window_offset, y=self.display_environment.display_frame_main_window_offset)
         self.main_menu_display_frame_aabb: ud.AABB = ud.AABB(0, 0, self.main_menu_display_frame.winfo_reqwidth(), self.main_menu_display_frame.winfo_reqheight())
@@ -24,3 +21,10 @@ class MainMenuUI:
     def remove_environment(self):
         self.main_menu_canvas.place_forget()
         self.main_menu_display_frame.place_forget()
+
+    def transition_to_game_display_environment_ui(self):
+        self.display_environment.swap_to_game_display_environment_ui()
+
+    #deploy-start-game-button
+    #deploy-game-settings-menu-button
+    #deploy-quit-program-button

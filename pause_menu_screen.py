@@ -23,3 +23,7 @@ class PauseScreenUI:
     def remove_environment(self):
         self.pause_screen_canvas.place_forget()
         self.pause_screen_display_frame.place_forget()
+
+    #deploy-quit-to-main-menu-button
+    #deploy-quit-program-button
+    #deploy-restart-game-button

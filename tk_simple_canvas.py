@@ -15,7 +15,7 @@ import pause_menu_screen as pms
 import start_screen as ss
 import main_menu_screen as mms
 import exit_game_screen as egs
-
+import game_settings_screen as gss
 
 class DisplayEnvironment():
 
@@ -140,6 +140,7 @@ class DisplayEnvironment():
         self.start_screen_ui: ss.StartScreenUI = None
         self.main_menu_screen_ui: mms.MainMenuUI = None
         self.exit_game_screen_ui: egs.ExitGameUI = None
+        self.game_settings_screen_ui: gss.GameSettingsUI = None
 
         self.game_environment_reset: bool = True
         #Switch-to-All_Entities class
@@ -149,6 +150,8 @@ class DisplayEnvironment():
         #self.tick()
 
         #self.enable_start_screen_environment()
+
+        #initial-UI-loader
         self.enable_game_display_environment()
 
     def enable_game_display_environment(self):
@@ -277,9 +280,7 @@ class DisplayEnvironment():
         #self.main_window.bind('<Right>', lambda event: self.move_display_frame_right())
         #self.main_window.bind('<Down>', lambda event: self.move_display_frame_down())
 
-
     def swap_to_start_screen_ui(self):
-        print('SWAPPING UI')
         if self.main_menu_screen_ui:
             self.unload_main_menu_screen_ui()
         elif self.exit_game_screen_ui:
@@ -288,26 +289,13 @@ class DisplayEnvironment():
             self.unload_game_display_environment_ui()
 
         if self.start_screen_ui:
-            print('PASSING')
             pass
         elif not self.start_screen_ui:
-            print('CREATING')
             self.start_screen_ui = ss.StartScreenUI(self)
-
-
-        #def toggle_pause_menu_ui(self):
-        #    if self.pause_menu_ui:
-        #        self.display_environment_tick_enabled = True
-        #        self.pause_menu_ui.pause_screen_display_frame.place_forget()
-        #        self.pause_menu_ui = None
-        #        self.game_environment.toggle_game_environment_tick()
-        #    elif not self.pause_menu_ui:
-        #        self.pause_menu_ui = pms.PauseScreenUI(self)
-        #        self.display_environment_tick_enabled = False
-        #        self.game_environment.toggle_game_environment_tick()
     def unload_start_screen_ui(self):
         self.start_screen_ui.remove_environment()
         self.start_screen_ui = None
+
     def swap_to_main_menu_screen_ui(self):
         if self.start_screen_ui:
             self.unload_start_screen_ui()
@@ -323,9 +311,8 @@ class DisplayEnvironment():
     def unload_main_menu_screen_ui(self):
         self.main_menu_screen_ui.remove_environment()
         self.main_menu_screen_ui = None
+
     def swap_to_game_display_environment_ui(self):
-        print('swapping-to-display-environment')
-        print(self.canvas)
         if self.start_screen_ui:
             self.unload_start_screen_ui()
         elif self.exit_game_screen_ui:
@@ -334,21 +321,16 @@ class DisplayEnvironment():
             self.unload_main_menu_screen_ui()
 
         if self.canvas:
-            print('PASSING')
             pass
         elif not self.canvas:
-            print('CREATING')
             self.enable_game_display_environment()
     def unload_game_display_environment_ui(self):
-        #update-into-own-
-        #print('UNLOADING DISPLAY ENVIRONMENT')
         self.game_environment.toggle_game_environment_tick()
         self.canvas.place_forget()
-        #print(self.canvas)
         self.canvas: tk.Canvas = None
         self.game_environment.reset_game_environment()
-        #print(self.canvas)
         self.display_environment_tick_enabled = False
+
     def swap_to_exit_game_screen_ui(self):
         if self.main_menu_screen_ui:
             self.unload_main_menu_screen_ui()
@@ -365,11 +347,6 @@ class DisplayEnvironment():
         self.exit_game_screen_ui.remove_environment()
         self.exit_game_screen_ui = None
 
-    def check_for_key_binding_set_parameters(self):
-        if self.game_display_environment_enabled:
-            if not self.game_display_environment_keybindings_set:
-                self.set_display_key_bindings()
-
     def toggle_pause_menu_ui(self):
         if self.pause_menu_ui:
             self.display_environment_tick_enabled = True
@@ -380,6 +357,22 @@ class DisplayEnvironment():
             self.pause_menu_ui = pms.PauseScreenUI(self)
             self.display_environment_tick_enabled = False
             self.game_environment.toggle_game_environment_tick()
+
+    #PRIORITY-UPDATE
+    def toggle_game_settings_screen(self):
+        pass
+        #if self.game_settings_screen_ui:
+        #UPDATE-to-display-and-toggle-on-top-of-main_menu_screen
+
+    #UPDATE-FRAMEWORK
+    def transition_to_exit_game_screen_ui(self):
+        self.swap_to_exit_game_screen_ui()
+
+    def check_for_key_binding_set_parameters(self):
+        if self.game_display_environment_enabled:
+            if not self.game_display_environment_keybindings_set:
+                self.set_display_key_bindings()
+
 
     def track_mouse_location(self):
         #new_VALS

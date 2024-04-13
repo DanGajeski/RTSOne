@@ -25,6 +25,9 @@ class MainMenuUI:
     def transition_to_game_display_environment_ui(self):
         self.display_environment.swap_to_game_display_environment_ui()
 
+    def tick(self):
+        pass
+
     #deploy-start-game-button
     #deploy-game-settings-menu-button
     #deploy-quit-program-button

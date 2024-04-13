@@ -24,6 +24,9 @@ class PauseScreenUI:
         self.pause_screen_canvas.place_forget()
         self.pause_screen_display_frame.place_forget()
 
+    def tick(self):
+        pass
+
     #deploy-quit-to-main-menu-button
     #deploy-quit-program-button
     #deploy-restart-game-button

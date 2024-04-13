@@ -16,10 +16,12 @@ import start_screen as ss
 import main_menu_screen as mms
 import exit_game_screen as egs
 import game_settings_screen as gss
+import all_uis as au
 
 class DisplayEnvironment():
 
     def __init__(self):
+        self.all_uis: au.AllUIs = au.AllUIs()
         #contianer_frame_main_window_offset
         self.map_width: float = 1000.0
         self.map_height: float = 1000.0
@@ -140,7 +142,14 @@ class DisplayEnvironment():
         self.start_screen_ui: ss.StartScreenUI = None
         self.main_menu_screen_ui: mms.MainMenuUI = None
         self.exit_game_screen_ui: egs.ExitGameUI = None
-        self.game_settings_screen_ui: gss.GameSettingsUI = None
+        self.game_settings_screen_ui: gss.GameSettingsUI = None\
+
+        self.pause_menu_ui_name: str = "pause_menu_screen"
+        self.start_screen_ui_name: str = "start_screen"
+        self.main_menu_screen_ui_name: str = "main_menu_screen"
+        self.exit_game_screen_ui_name: str = "exit_game_screen"
+        self.game_settings_screen_ui_name: str = "game_settings_screen"
+        self.canvas_ui_name: str = "canvas_screen"
 
         self.game_environment_reset: bool = True
         #Switch-to-All_Entities class
@@ -292,9 +301,30 @@ class DisplayEnvironment():
             pass
         elif not self.start_screen_ui:
             self.start_screen_ui = ss.StartScreenUI(self)
+
+    #RETURNDANHERE=>
+    def swap_to_start_screen_ui_updated(self):
+        pass
+        if self.all_uis.all[self.main_menu_screen_ui_name]:
+            pass
+        elif self.all_uis.all[self.exit_game_screen_ui_name]:
+            pass
+        elif self.all_uis.all[self.canvas_ui_name]:
+            pass
+
+        if self.all_uis.all[self.start_screen_ui_name]:
+            self.unload_start_screen_ui_updated()
+        elif not self.all_uis.all[self.start_screen_ui_name]:
+            self.all_uis.add_ui(self.start_screen_ui_name, ss.StartScreenUI(self))
+
     def unload_start_screen_ui(self):
         self.start_screen_ui.remove_environment()
         self.start_screen_ui = None
+
+    def unload_start_screen_ui_updated(self):
+        pass
+        self.all_uis.all[self.start_screen_ui_name].remove_environment()
+        self.all_uis.reset_ui_to_none(self.start_screen_ui_name)
 
     def swap_to_main_menu_screen_ui(self):
         if self.start_screen_ui:

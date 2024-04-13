@@ -1,6 +1,7 @@
 import tk_simple_canvas as tsc
 import tkinter as tk
 import unit_data as ud
+import time as time
 
 class StartScreenUI:
     def __init__(self, display_environment):
@@ -17,6 +18,11 @@ class StartScreenUI:
         self.start_screen_canvas.place(x=self.start_screen_canvas_x_placement,y=self.start_screen_canvas_y_placement)
         self.start_screen_canvas_aabb: ud.AABB = ud.AABB(0, 0, self.start_screen_canvas.winfo_reqwidth(), self.start_screen_canvas.winfo_reqheight())
 
+        self.cooldown_tracker_one: float = None
+        self.cooldown_tracker_two: float = None
+        self.cooldown_time: float = 5.0
+        self.on_cooldown: bool = True
+
     def remove_environment(self):
         self.start_screen_canvas.place_forget()
         self.start_screen_display_frame.place_forget()
@@ -27,3 +33,6 @@ class StartScreenUI:
 
     def transition_to_main_menu_ui(self):
         self.display_environment.swap_to_main_menu_screen_ui()
+
+    def tick(self):
+        pass

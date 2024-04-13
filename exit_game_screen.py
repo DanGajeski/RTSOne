@@ -28,3 +28,6 @@ class ExitGameUI:
 
     def transition_to_closing_program(self):
         pass
+
+    def tick(self):
+        pass

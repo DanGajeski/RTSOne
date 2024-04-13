@@ -28,5 +28,8 @@ class GameSettingsUI:
     def transition_to_game_display_environment_ui(self):
         self.display_environment.swap_to_game_display_environment_ui()
 
+    def tick(self):
+        pass
+
     #deploy-difficulty-button
     #deploy-color-settings-button

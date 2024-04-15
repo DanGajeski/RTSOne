@@ -16,7 +16,9 @@ import start_screen as ss
 import main_menu_screen as mms
 import exit_game_screen as egs
 import game_settings_screen as gss
+import game_environment_ui as geu
 import all_uis as au
+
 
 class DisplayEnvironment():
 
@@ -142,7 +144,8 @@ class DisplayEnvironment():
         self.start_screen_ui: ss.StartScreenUI = None
         self.main_menu_screen_ui: mms.MainMenuUI = None
         self.exit_game_screen_ui: egs.ExitGameUI = None
-        self.game_settings_screen_ui: gss.GameSettingsUI = None\
+        self.game_settings_screen_ui: gss.GameSettingsUI = None
+        self.game_environment_ui: geu.GameEnvironmentUI = None
 
         self.pause_menu_ui_name: str = "pause_menu_screen"
         self.start_screen_ui_name: str = "start_screen"
@@ -376,6 +379,23 @@ class DisplayEnvironment():
     #     self.canvas: tk.Canvas = None
     #     self.game_environment.reset_game_environment()
     #     self.display_environment_tick_enabled = False
+
+    def swap_to_display_environment_ui_ui_streamlined(self):
+        if self.all_uis.all[self.start_screen_ui_name]:
+            self.all_uis.all[self.start_screen_ui_name].unload_start_screen_ui()
+        elif self.all_uis.all[self.exit_game_screen_ui_name]:
+            self.all_uis.all[self.exit_game_screen_ui_name].unload_exit_game_screen_ui()
+        elif self.all_uis.all[self.main_menu_screen_ui_name]:
+            self.all_uis.all[self.main_menu_screen_ui_name].unload_main_menu_screen_ui()
+
+        if self.all_uis.all[self.canvas_ui_name]:
+            pass
+        elif not self.all_uis.all[self.canvas_ui_name]:
+            self.all_uis.add_ui(self.canvas_ui_name, geu.GameEnvironmentUI(self))
+
+    def unload_display_environment_ui_streamlined(self):
+        self.all_uis.all[self.main_menu_screen_ui_name].remove_environment()
+        self.all_uis.reset_ui_to_none(self.main_menu_screen_ui_name)
 
     #COME-BACK-HERE_ADD-self.canvas_ui_name canvas to self.all_uis.all
     def swap_to_game_display_environment_ui(self):
@@ -692,6 +712,17 @@ class DisplayEnvironment():
             self.restrict_mouse_within_display_area()
 
             self.display_all_elements()
+
+            #UPDATE-HERE-UPDATE-FUNCTIONS-TO-TAKE-IN-CANVAS
+            #self.reset_canvas(canvas)#self.canvas.delete('all')
+            #self.update_canvas_frame_placement()?
+            #self.draw_map_stripes_background(canvas)
+            #self.display_all_elements(canvas)
+
+
+        #UPDATE-HERE->streamlined_uis_tick
+        #for ui in self.all_uis.all:
+        #    ui.tick()
 
         #moving-to-game_environment
         #MOVING

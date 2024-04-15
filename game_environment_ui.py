@@ -6,6 +6,10 @@ class GameEnvironmentUI:
     def __init__(self, display_environment):
         self.display_environment = display_environment
 
+        self.canvas = tk.Canvas(self.display_environment.display_frame, bg=self.display_environment.canvas_bg_color, width=self.display_environment.map_width, height=self.display_environment.map_height)
+        self.canvas.place(x=self.display_environment.canvas_x_placement,y=self.display_environment.canvas_y_placement)
+        self.canvas_aabb: ud.AABB = ud.AABB(0, 0, self.canvas.winfo_reqwidth(), self.canvas.winfo_reqheight())
+
         # self.main_menu_canvas_bg_color = "#00FF00"#red
         # self.main_menu_canvas_x_placement: int = 0
         # self.main_menu_canvas_y_placement: int = 0
@@ -19,11 +23,11 @@ class GameEnvironmentUI:
         # self.main_menu_canvas_aabb: ud.AABB = ud.AABB(0, 0, self.main_menu_canvas.winfo_reqwidth(), self.main_menu_canvas.winfo_reqheight())
 
     def remove_environment(self):
-        self.game_environment_canvas.place_forget()
-        self.game_environment_display_frame.place_forget()
+        self.canvas.place_forget()
+        #self.diplay_environment.display_frame.place_forget()
 
-    def transition_to_game_environment_ui(self):
-        self.display_environment.swap_to_game_environment_ui()
+    #def transition_to_game_environment_ui(self):
+    #    self.display_environment.swap_to_game_environment_ui()
 
     def tick(self):
         pass

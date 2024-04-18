@@ -23,40 +23,40 @@ import all_uis as au
 class DisplayEnvironment():
 
     def __init__(self):
-        self.all_uis: au.AllUIs = au.AllUIs()
+        self.all_uis: au.AllUIs = au.AllUIs()#TRANSFERRED
         #contianer_frame_main_window_offset
-        self.map_width: float = 1000.0
-        self.map_height: float = 1000.0
+        self.map_width: float = 1000.0#TRANSFERRED
+        self.map_height: float = 1000.0#TRANSFERRED
 
-        self.display_frame_main_window_offset: float = 10.0
+        self.display_frame_main_window_offset: float = 10.0#TRANSFERRED
 
-        self.main_window_width: float = 520.0
-        self.main_window_height: float = 520.0
+        self.main_window_width: float = 520.0#TRANSFERRED
+        self.main_window_height: float = 520.0#TRANSFERRED
 
-        self.canvas_x_placement: int = 0
-        self.canvas_y_placement: int = 0
+        self.canvas_x_placement: int = 0#TRANSFERRED
+        self.canvas_y_placement: int = 0#TRANSFERRED
 
         #main_window_dimensions_geometry_object_formatted
-        self.main_window_dimensions_geometry_formatted: str = str(int(self.main_window_width)) + "x" + str(int(self.main_window_height))
+        self.main_window_dimensions_geometry_formatted: str = str(int(self.main_window_width)) + "x" + str(int(self.main_window_height))#TRANSFERRED
         #main_window_title
-        self.main_window_title_text: str = "Dan's Fuckin' RTS"
+        self.main_window_title_text: str = "Dan's Fuckin' RTS"#TRANSFERRED
+
         #canvas_color
-        self.canvas_bg_color: str = "#00FF00"
-        self.canvas_vertical_stripe_color: str = "#FFFFFF"
-        self.canvas_horitontal_stripe_color: str = "#000000"
+        self.canvas_bg_color: str = "#00FF00"#TRANSFERRED
+        self.canvas_vertical_stripe_color: str = "#FFFFFF"#TRANSFERRED
+        self.canvas_horitontal_stripe_color: str = "#000000"#TRANSFERRED
 
         #MAIN-UI-ELEMENT
         #init_window
-        self.main_window = tk.Tk()
-        self.main_window.geometry(self.main_window_dimensions_geometry_formatted)
-        self.main_window.title(self.main_window_title_text)
-
+        self.main_window = tk.Tk()#TRANSFERRED
+        self.main_window.geometry(self.main_window_dimensions_geometry_formatted)#TRANSFERRED
+        self.main_window.title(self.main_window_title_text)#TRANSFERRED
 
         #GAME-UI-ELEMENTS
         #init_frame
-        self.display_frame = tk.Frame(self.main_window, width=self.main_window_width - self.display_frame_main_window_offset*2, height=self.main_window_height - self.display_frame_main_window_offset*2)
-        self.display_frame.place(x=self.display_frame_main_window_offset, y=self.display_frame_main_window_offset)
-        self.display_frame_aabb: ud.AABB = ud.AABB(0, 0, self.display_frame.winfo_reqwidth(), self.display_frame.winfo_reqheight())
+        self.display_frame = tk.Frame(self.main_window, width=self.main_window_width - self.display_frame_main_window_offset*2, height=self.main_window_height - self.display_frame_main_window_offset*2)#TRANSFERRED
+        self.display_frame.place(x=self.display_frame_main_window_offset, y=self.display_frame_main_window_offset)#TRANSFERRED
+        self.display_frame_aabb: ud.AABB = ud.AABB(0, 0, self.display_frame.winfo_reqwidth(), self.display_frame.winfo_reqheight())#TRANSFERRED
 
         #GAME-UI-ELEMENTS
         #init_canvas
@@ -64,22 +64,22 @@ class DisplayEnvironment():
         #self.canvas.place(x=self.canvas_x_placement,y=self.canvas_y_placement)
         #self.canvas_aabb: ud.AABB = ud.AABB(0, 0, self.canvas.winfo_reqwidth(), self.canvas.winfo_reqheight())
 
-        self.game_display_environment_enabled: bool = False
-        self.game_display_environment_keybindings_set: bool = False
 
-        self.start_screen_environment_enabled: bool = False
-        self.start_screen_environment_keybindings_set: bool = False
-        self.start_screen_environment: None
+        self.game_environment_enabled: bool = False#TRANSFERRED
+        self.game_environment_keybindings_set: bool = False#TRANSFERRED
+        self.game_environment: None#TRANSFERRED
 
-        self.main_menu_screen_environment_enabled: bool = False
-        self.main_menu_screen_environment_keybindings_set: bool = False
-        self.main_menu_screen_environment: None
+        self.start_screen_environment_enabled: bool = False#TRANSFERRED
+        self.start_screen_environment_keybindings_set: bool = False#TRANSFERRED
+        self.start_screen_environment: None#TRANSFERRED
 
-        self.exit_game_screen_environment_enabled: bool = False
-        self.exit_game_screen_environment_keybindings_set: bool = False
-        self.exit_game_screen_environment: None
+        self.main_menu_screen_environment_enabled: bool = False#TRANSFERRED
+        self.main_menu_screen_environment_keybindings_set: bool = False#TRANSFERRED
+        self.main_menu_screen_environment: None#TRANSFERRED
 
-        self.game_environment: game_environment.GameEnvironment = None
+        self.exit_game_screen_environment_enabled: bool = False#TRANSFERRED
+        self.exit_game_screen_environment_keybindings_set: bool = False#TRANSFERRED
+        self.exit_game_screen_environment: None#TRANSFERRED
 
         #MOVING
         #MOVE-GAMEENVIRONMENT
@@ -124,7 +124,7 @@ class DisplayEnvironment():
         #MOVING
         #self.selected_entities = se.SelectedEntities()
 
-
+        #MOVE-SECTION-TO-GAME-ENVIRONMENT-UI****************************************************<<<<<<<<<<<<<<<<<<<<<<<<
         self.origin_x: float = 0.0
         self.origin_y: float = 0.0
         self.destination_x: float = 0.0
@@ -136,25 +136,25 @@ class DisplayEnvironment():
 
         self.display_screen_canvas_scroll_speed: int = 5
 
-        #MOVING
         self.track_entity_attack_ranges_enabled: bool = False
+        #MOVE-SECTION-TO-GAME-ENVIRONMENT-UI****************************************************<<<<<<<<<<<<<<<<<<<<<<<<
 
-        self.display_environment_tick_enabled: bool = False
-        self.pause_menu_ui: pms.PauseScreenUI = None
-        self.start_screen_ui: ss.StartScreenUI = None
-        self.main_menu_screen_ui: mms.MainMenuUI = None
-        self.exit_game_screen_ui: egs.ExitGameUI = None
-        self.game_settings_screen_ui: gss.GameSettingsUI = None
-        self.game_environment_ui: geu.GameEnvironmentUI = None
+        self.display_environment_tick_enabled: bool = False#TRANSFERRED
+        #self.pause_menu_ui: pms.PauseScreenUI = None
+        #self.start_screen_ui: ss.StartScreenUI = None
+        #self.main_menu_screen_ui: mms.MainMenuUI = None
+        #self.exit_game_screen_ui: egs.ExitGameUI = None
+        #self.game_settings_screen_ui: gss.GameSettingsUI = None
+        #self.game_environment_ui: geu.GameEnvironmentUI = None
 
-        self.pause_menu_ui_name: str = "pause_menu_screen"
-        self.start_screen_ui_name: str = "start_screen"
-        self.main_menu_screen_ui_name: str = "main_menu_screen"
-        self.exit_game_screen_ui_name: str = "exit_game_screen"
-        self.game_settings_screen_ui_name: str = "game_settings_screen"
-        self.canvas_ui_name: str = "canvas_screen"
+        self.pause_menu_ui_name: str = "pause_menu_screen"#TRANSFERRED
+        self.start_screen_ui_name: str = "start_screen"#TRANSFERRED
+        self.main_menu_screen_ui_name: str = "main_menu_screen"#TRANSFERRED
+        self.exit_game_screen_ui_name: str = "exit_game_screen"#TRANSFERRED
+        self.game_settings_screen_ui_name: str = "game_settings_screen"#TRANSFERRED
+        self.canvas_ui_name: str = "canvas_screen"#TRANSFERRED/UPDATED
 
-        self.game_environment_reset: bool = True
+        self.game_environment_reset: bool = True#TRANSFERRED
         #Switch-to-All_Entities class
 
         #self.set_window_bindings()
@@ -166,7 +166,8 @@ class DisplayEnvironment():
         #initial-UI-loader
         self.enable_game_display_environment()
 
-    def enable_game_display_environment(self):
+
+    def enable_game_display_environment(self):#UNNEEDED
         self.game_display_environment_enabled = True
         self.display_environment_tick_enabled = True
         #GAME-UI-ELEMENTS
@@ -184,10 +185,10 @@ class DisplayEnvironment():
         if self.game_environment:
             self.game_environment.toggle_game_environment_tick()
 
-    def enable_start_screen_environment(self):
+    def enable_start_screen_environment(self):#UNNEEDED
         self.start_screen_environment = ss.StartScreenUI(self)
 
-    def disable_start_screen_environment(self):
+    def disable_start_screen_environment(self):#UNNEDED??
         self.start_screen_environment.remove_environment()
         self.start_screen_environment = None
 
@@ -203,7 +204,7 @@ class DisplayEnvironment():
     def get_main_window(self):
         return self.main_window
 
-    def draw_map_stripes_background(self):
+    def draw_map_stripes_background(self):#FOR-GAME_ENVIRONMENT_UI
         #new_vars
         self.working_canvas_width: float = float(self.canvas.winfo_width())
         self.working_canvas_width_twenty_spaces_count: int = int(self.working_canvas_width / 20)
@@ -267,11 +268,11 @@ class DisplayEnvironment():
         #draw_map_stripes_black_dominance()
 
     #MOVING
-    def set_target_movement_location(self):
+    def set_target_movement_location(self):#FOR-GAME_ENVIRONMENT_UI
         #self.target_vec = ud.Vec2d(self.canvas_mouse_location_x, self.canvas_mouse_location_y)
         self.game_environment.all_entities.set_target_vec_selected(ud.Vec2d(self.canvas_mouse_location_x, self.canvas_mouse_location_y))
 
-    def set_display_key_bindings(self):
+    def set_display_key_bindings(self):#SPLIT-KEY-BINDINGS-INTO-UI-KEYBINDINGS
         self.game_display_environment_keybindings_set = True
 
         self.main_window.bind('<Motion>', lambda event: self.track_mouse_location())
@@ -306,7 +307,7 @@ class DisplayEnvironment():
     #     elif not self.start_screen_ui:
     #         self.start_screen_ui = ss.StartScreenUI(self)
 
-    def swap_to_start_screen_ui(self):
+    def swap_to_start_screen_ui(self):#TRANSFERRED
         if self.all_uis.all[self.main_menu_screen_ui_name]:
             self.all_uis.all[self.main_menu_screen_ui_name].unload_main_menu_screen_ui()
         elif self.all_uis.all[self.exit_game_screen_ui_name]:
@@ -319,7 +320,7 @@ class DisplayEnvironment():
         elif not self.all_uis.all[self.start_screen_ui_name]:
             self.all_uis.add_ui(self.start_screen_ui_name, ss.StartScreenUI(self))
 
-    def unload_start_screen_ui(self):
+    def unload_start_screen_ui(self):#TRANSFERRED
         self.all_uis.all[self.start_screen_ui_name].remove_environment()
         self.all_uis.reset_ui_to_none(self.start_screen_ui_name)
 
@@ -344,7 +345,7 @@ class DisplayEnvironment():
     #     self.main_menu_screen_ui.remove_environment()
     #     self.main_menu_screen_ui = None
 
-    def swap_to_main_menu_screen_ui(self):
+    def swap_to_main_menu_screen_ui(self):#TRANSFERRED
         if self.all_uis.all[self.start_screen_ui_name]:
             self.all_uis.all[self.start_screen_ui_name].unload_start_screen_ui()
         elif self.all_uis.all[self.exit_game_screen_ui_name]:
@@ -357,7 +358,7 @@ class DisplayEnvironment():
         elif not self.all_uis.all[self.main_menu_screen_ui_name]:
             self.all_uis.add_ui(self.main_menu_screen_ui_name, mms.MainMenuUI(self))
 
-    def unload_main_menu_screen_ui(self):
+    def unload_main_menu_screen_ui(self):#TRANSFERRED
         self.all_uis.all[self.main_menu_screen_ui_name].remove_environment()
         self.all_uis.reset_ui_to_none(self.main_menu_screen_ui_name)
 
@@ -380,7 +381,7 @@ class DisplayEnvironment():
     #     self.game_environment.reset_game_environment()
     #     self.display_environment_tick_enabled = False
 
-    def swap_to_display_environment_ui_ui_streamlined(self):
+    def swap_to_display_environment_ui_ui_streamlined(self):#TRANSFERRED
         if self.all_uis.all[self.start_screen_ui_name]:
             self.all_uis.all[self.start_screen_ui_name].unload_start_screen_ui()
         elif self.all_uis.all[self.exit_game_screen_ui_name]:
@@ -393,12 +394,12 @@ class DisplayEnvironment():
         elif not self.all_uis.all[self.canvas_ui_name]:
             self.all_uis.add_ui(self.canvas_ui_name, geu.GameEnvironmentUI(self))
 
-    def unload_display_environment_ui_streamlined(self):
+    def unload_display_environment_ui_streamlined(self):#TRANSFERRED
         self.all_uis.all[self.main_menu_screen_ui_name].remove_environment()
         self.all_uis.reset_ui_to_none(self.main_menu_screen_ui_name)
 
     #COME-BACK-HERE_ADD-self.canvas_ui_name canvas to self.all_uis.all
-    def swap_to_game_display_environment_ui(self):
+    def swap_to_game_display_environment_ui(self):#TRANSFERRED
         if self.all_uis.all[self.main_menu_screen_ui_name]:
             self.all_uis.all[self.main_menu_screen_ui_name].unload_main_menu_screen_ui()
         elif self.all_uis.all[self.exit_game_screen_ui_name]:
@@ -414,7 +415,7 @@ class DisplayEnvironment():
             #self.enable_game_display_environment()...?#perhaps-not-needed-after-tick-change
             #self.all_uis.add_ui(self.canvas_ui_name, self.canvas)
 
-    def unload_game_display_environment_ui(self):
+    def unload_game_display_environment_ui(self):#TRANSFERRED
         #self.all_uis.all[self.canvas_ui_name].remove_environment()
         self.game_environment.toggle_game_environment_tick()
         self.canvas.place_forget()
@@ -439,7 +440,7 @@ class DisplayEnvironment():
     #     self.exit_game_screen_ui.remove_environment()
     #     self.exit_game_screen_ui = None
 
-    def swap_to_exit_game_screen_ui(self):
+    def swap_to_exit_game_screen_ui(self):#TRANSFERRED
         if self.all_uis.all[self.main_menu_screen_ui_name]:
             self.all_uis.all[self.main_menu_screen_ui_name].unload_main_menu_screen_ui()
         elif self.all_uis.all[self.start_screen_ui_name]:
@@ -452,11 +453,11 @@ class DisplayEnvironment():
         elif not self.all_uis.all[self.exit_game_screen_ui_name]:
             self.all_uis.add_ui(self.exit_game_screen_ui_name, egs.ExitGameUI(self))
 
-    def unload_exit_game_screen_ui(self):
+    def unload_exit_game_screen_ui(self):#TRANSFERRED
         self.all_uis.all[self.exit_game_screen_ui].remove_environment()
         self.all_uis.reset_ui_to_none(self.exit_game_screen_ui_name)
 
-    def toggle_pause_menu_ui(self):
+    def toggle_pause_menu_ui(self):#TRANSFERRED
         if self.pause_menu_ui:
             self.display_environment_tick_enabled = True
             self.pause_menu_ui.pause_screen_display_frame.place_forget()
@@ -468,22 +469,22 @@ class DisplayEnvironment():
             self.game_environment.toggle_game_environment_tick()
 
     #PRIORITY-UPDATE
-    def toggle_game_settings_screen(self):
+    def toggle_game_settings_screen(self):#TRANSFERRED
         pass
         #if self.game_settings_screen_ui:
         #UPDATE-to-display-and-toggle-on-top-of-main_menu_screen
 
     #UPDATE-FRAMEWORK
-    def transition_to_exit_game_screen_ui(self):
+    def transition_to_exit_game_screen_ui(self):#TRANSFERRED
         self.swap_to_exit_game_screen_ui()
 
-    def check_for_key_binding_set_parameters(self):
+    def check_for_key_binding_set_parameters(self):#UPDATE-FOR-ALL-KEYBINDINGS/UIS
         if self.game_display_environment_enabled:
             if not self.game_display_environment_keybindings_set:
                 self.set_display_key_bindings()
 
 
-    def track_mouse_location(self):
+    def track_mouse_location(self):#FOR-GAME_ENVIRONMENT_UI
         #new_VALS
         #verified
         self.main_window_x_location_SCREEN: int = self.main_window.winfo_rootx()
@@ -507,28 +508,28 @@ class DisplayEnvironment():
         self.canvas_mouse_location_y: int = self.display_frame_mouse_location_y - self.canvas_y_placement
 
 
-    def move_display_frame_up(self):
+    def move_display_frame_up(self):#FOR-GAME_ENVIRONMENT_UI
         self.canvas_y_placement-=5
-    def move_display_frame_up_right(self):
+    def move_display_frame_up_right(self):#FOR-GAME_ENVIRONMENT_UI
         self.canvas_y_placement-=5
         self.canvas_x_placement+=5
-    def move_display_frame_up_left(self):
+    def move_display_frame_up_left(self):#FOR-GAME_ENVIRONMENT_UI
         self.canvas_y_placement-=5
         self.canvas_x_placement-=5
-    def move_display_frame_left(self):
+    def move_display_frame_left(self):#FOR-GAME_ENVIRONMENT_UI
         self.canvas_x_placement-=5
-    def move_display_frame_right(self):
+    def move_display_frame_right(self):#FOR-GAME_ENVIRONMENT_UI
         self.canvas_x_placement+=5
-    def move_display_frame_down(self):
+    def move_display_frame_down(self):#FOR-GAME_ENVIRONMENT_UI
         self.canvas_y_placement+=5
-    def move_display_frame_down_right(self):
+    def move_display_frame_down_right(self):#FOR-GAME_ENVIRONMENT_UI
         self.canvas_y_placement+=5
         self.canvas_x_placement+=5
-    def move_display_frame_down_left(self):
+    def move_display_frame_down_left(self):#FOR-GAME_ENVIRONMENT_UI
         self.canvas_y_placement+=5
         self.canvas_x_placement-=5
 
-    def set_unit_selector_origin(self):
+    def set_unit_selector_origin(self):#FOR-GAME_ENVIRONMENT_UI
         origin_on_unit: bool = False
         selecting_entity: ce.Entity
 
@@ -549,15 +550,15 @@ class DisplayEnvironment():
         else:
             self.enable_unit_selector()
 
-    def select_entity(self, entity):
+    def select_entity(self, entity):#FOR-GAME_ENVIRONMENT_UI
         self.game_environment.all_entities.add_to_selected_entities(entity)
 
-    def enable_unit_selector(self):
+    def enable_unit_selector(self):#FOR-GAME_ENVIRONMENT_UI
         self.unit_selector_enabled = True
         self.motion_selection_aabb.x1 = self.origin_x
         self.motion_selection_aabb.y1 = self.origin_y
 
-    def make_selection(self):
+    def make_selection(self):#FOR-GAME_ENVIRONMENT_UI
         #clear-selected-entities-first
         self.game_environment.all_entities.remove_all_selected_entities()
         for entity in self.game_environment.all_entities.all:
@@ -566,14 +567,14 @@ class DisplayEnvironment():
                     self.game_environment.all_entities.add_to_selected_entities(entity)
 
     #MOVING
-    def enable_track_entity_attack_ranges(self):
+    def enable_track_entity_attack_ranges(self):#FOR-GAME_ENVIRONMENT_UI
         self.track_entity_attack_ranges_enabled: bool = True
 
-    def update_canvas_frame_placement(self):
+    def update_canvas_frame_placement(self):#FOR-GAME_ENVIRONMENT_UI
         self.canvas.place(x=self.canvas_x_placement,y=self.canvas_y_placement)
 
     #CLEANTHISUPUPONREFACTOR
-    def lock_cursor_to_frame(self):
+    def lock_cursor_to_frame(self):#FOR-GAME_ENVIRONMENT_UI
         if self.mouse_border_monitoring == True:
             self.mouse_border_monitoring = False
         else:
@@ -583,14 +584,14 @@ class DisplayEnvironment():
             else:
                 print("Mouse not in display frame")
 
-    def display_frame_point_get_screen_xy(self, x: float, y: float):
+    def display_frame_point_get_screen_xy(self, x: float, y: float):#FOR-GAME_ENVIRONMENT_UI
         new_windows_x = x + self.display_frame_main_window_offset + self.main_window_x_location_SCREEN
         new_windows_y = y + self.display_frame_main_window_offset + self.main_window_y_location_SCREEN
         return (new_windows_x, new_windows_y)
 
     #intotal-restricts-mouse-to-display-frame-and-scrolls-display-frame-dependent-on-scroll-speed
     #plan->for-update-to-only-allow-movement-within-game-environment-frame
-    def restrict_mouse_within_display_area(self):
+    def restrict_mouse_within_display_area(self):#FOR-GAME_ENVIRONMENT_UI
         if self.mouse_border_monitoring:
             if self.display_frame_aabb.check_xy_in_aabb(self.display_frame_mouse_location_point[0], self.display_frame_mouse_location_point[1]):
                 print("INSIDE_FRAME")
@@ -642,7 +643,7 @@ class DisplayEnvironment():
         else:
             pass
 
-    def button_release_checks(self):
+    def button_release_checks(self):#FOR-GAME_ENVIRONMENT_UI
         if self.unit_selector_enabled:
             self.unit_selector_enabled = False
             self.destination_x = self.canvas_mouse_location_x
@@ -659,32 +660,32 @@ class DisplayEnvironment():
 
             self.make_selection()
 
-    def draw_unit_selector(self):
+    def draw_unit_selector(self):#FOR-GAME_ENVIRONMENT_UI
         #current_destination_x = self.get_mouse_x_location()
         current_destination_x = self.canvas_mouse_location_x
         #current_destination_y = self.get_mouse_y_location()
         current_destination_y = self.canvas_mouse_location_y
         self.canvas.create_rectangle(self.origin_x, self.origin_y, current_destination_x, current_destination_y, outline='white')
 
-    def run_main_window(self):
+    def run_main_window(self):#TRANSFERRED
         self.main_window.mainloop()
 
-    def highlight_selected_entities(self):
+    def highlight_selected_entities(self):#FOR-GAME_ENVIRONMENT_UI
         for entity in self.game_environment.all_entities.selected:
             self.canvas.create_rectangle(entity.aabb.x1, entity.aabb.y1, entity.aabb.x2, entity.aabb.y2, outline='red', width=2)
 
-    def display_entity(self, entity: ce.Entity):
+    def display_entity(self, entity: ce.Entity):#FOR-GAME_ENVIRONMENT_UI
         self.canvas.create_image(entity.pos.x, entity.pos.y, image=entity.img, anchor=tk.NW)
 
-    def display_laser_shot(self, laser_shot: ls.LaserShot):
+    def display_laser_shot(self, laser_shot: ls.LaserShot):#FOR-GAME_ENVIRONMENT_UI
         #print('displaying-laser-shot')
         self.canvas.create_line(laser_shot.laser_pulse_beginning_point_vec.x, laser_shot.laser_pulse_beginning_point_vec.y, laser_shot.laser_pulse_end_point_vec.x, laser_shot.laser_pulse_end_point_vec.y, fill=laser_shot.laser_pulse_color, width=laser_shot.laser_pulse_width)
 
-    def display_building(self, building):
+    def display_building(self, building):#FOR-GAME_ENVIRONMENT_UI
         self.canvas.create_image(building.x, building.y, image=building.img, anchor=tk.NW)
 
     #UPDATE-AFTER-REFACTOR
-    def display_all_elements(self):
+    def display_all_elements(self):#FOR-GAME_ENVIRONMENT_UI
         if self.unit_selector_enabled:
             self.draw_unit_selector()
         for entity in self.game_environment.all_entities.all:
@@ -700,7 +701,7 @@ class DisplayEnvironment():
 
             #print('displaying LASER SHOT')
 
-    def tick(self):
+    def tick(self):#FOR-GAME_ENVIRONMENT_UI
         #self.main_window.after(60, self.tick)
         if self.display_environment_tick_enabled:
             self.canvas.delete('all')

@@ -5,6 +5,7 @@ import game_settings_screen as gss
 import exit_game_screen as egs
 import all_uis as au
 import tkinter as tk
+import pause_menu_screen as pms
 
 
 #file meant to be where UIS get INITIALIZED and SWAPPED out for one another.
@@ -111,8 +112,8 @@ class GameStateManager():
             self.all_uis.all[self.main_menu_screen_ui_name].unload_main_menu_screen_ui()
         elif self.all_uis.all[self.start_screen_ui_name]:
             self.all_uis.all[self.start_screen_ui_name].unload_start_screen_ui()
-        elif self.all_uis.all[self.canvas_ui_name]:
-            self.all_uis.all[self.canvas_ui_name].unload_game_display_environment_ui()
+        elif self.all_uis.all[self.exit_game_screen_ui_name]:
+            self.all_uis.all[self.exit_game_screen_ui_name].unload_game_display_environment_ui()
 
         if self.all_uis.all[self.exit_game_screen_ui_name]:
             self.unload_exit_game_screen_ui()

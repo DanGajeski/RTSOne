@@ -27,8 +27,18 @@ class StartScreenUI:
         self.start_screen_canvas.place_forget()
         self.start_screen_display_frame.place_forget()
 
-    def play_start_animation(self):
+    def play_start_animations(self):
+
+
         pass
+
+
+        def play_start_animation_left():
+            pass
+        def play_start_animation_right():
+            pass
+
+
         #use_perf_timer
 
     def transition_to_main_menu_ui(self):

@@ -125,18 +125,15 @@ class DisplayEnvironment():
         #self.selected_entities = se.SelectedEntities()
 
         #MOVE-SECTION-TO-GAME-ENVIRONMENT-UI****************************************************<<<<<<<<<<<<<<<<<<<<<<<<
-        self.origin_x: float = 0.0
-        self.origin_y: float = 0.0
-        self.destination_x: float = 0.0
-        self.destination_y: float = 0.0
-        self.unit_selector_enabled: bool = False
-        self.motion_selection_aabb: ud.AABB = ud.AABB(0,0,0,0)
-
-        self.mouse_border_monitoring: bool = False
-
-        self.display_screen_canvas_scroll_speed: int = 5
-
-        self.track_entity_attack_ranges_enabled: bool = False
+        self.origin_x: float = 0.0#TRANSFERRED
+        self.origin_y: float = 0.0#TRANSFERRED
+        self.destination_x: float = 0.0#TRANSFERRED
+        self.destination_y: float = 0.0#TRANSFERRED
+        self.unit_selector_enabled: bool = False#TRANSFERRED
+        self.motion_selection_aabb: ud.AABB = ud.AABB(0,0,0,0)#TRANSFERRED
+        self.mouse_border_monitoring: bool = False#TRANSFERRED
+        self.display_screen_canvas_scroll_speed: int = 5#TRANSFERRED
+        self.track_entity_attack_ranges_enabled: bool = False#TRANSFERRED
         #MOVE-SECTION-TO-GAME-ENVIRONMENT-UI****************************************************<<<<<<<<<<<<<<<<<<<<<<<<
 
         self.display_environment_tick_enabled: bool = False#TRANSFERRED
@@ -164,7 +161,7 @@ class DisplayEnvironment():
         #self.enable_start_screen_environment()
 
         #initial-UI-loader
-        self.enable_game_display_environment()
+        self.enable_game_display_environment()#Unneeded?
 
 
     def enable_game_display_environment(self):#UNNEEDED
@@ -201,10 +198,10 @@ class DisplayEnvironment():
         #    self.display_entity(entity)
 
     #for-key_bindings
-    def get_main_window(self):
+    def get_main_window(self):#TRANSFERRED
         return self.main_window
 
-    def draw_map_stripes_background(self):#FOR-GAME_ENVIRONMENT_UI
+    def draw_map_stripes_background(self):#TRANSFERRED
         #new_vars
         self.working_canvas_width: float = float(self.canvas.winfo_width())
         self.working_canvas_width_twenty_spaces_count: int = int(self.working_canvas_width / 20)
@@ -268,11 +265,11 @@ class DisplayEnvironment():
         #draw_map_stripes_black_dominance()
 
     #MOVING
-    def set_target_movement_location(self):#FOR-GAME_ENVIRONMENT_UI
+    def set_target_movement_location(self):#TRANSFERRED
         #self.target_vec = ud.Vec2d(self.canvas_mouse_location_x, self.canvas_mouse_location_y)
         self.game_environment.all_entities.set_target_vec_selected(ud.Vec2d(self.canvas_mouse_location_x, self.canvas_mouse_location_y))
 
-    def set_display_key_bindings(self):#SPLIT-KEY-BINDINGS-INTO-UI-KEYBINDINGS
+    def set_display_key_bindings(self):#TRANSFERRED
         self.game_display_environment_keybindings_set = True
 
         self.main_window.bind('<Motion>', lambda event: self.track_mouse_location())
@@ -478,13 +475,13 @@ class DisplayEnvironment():
     def transition_to_exit_game_screen_ui(self):#TRANSFERRED
         self.swap_to_exit_game_screen_ui()
 
-    def check_for_key_binding_set_parameters(self):#UPDATE-FOR-ALL-KEYBINDINGS/UIS
+    def check_for_key_binding_set_parameters(self):#UNNEEDED?
         if self.game_display_environment_enabled:
             if not self.game_display_environment_keybindings_set:
                 self.set_display_key_bindings()
 
 
-    def track_mouse_location(self):#FOR-GAME_ENVIRONMENT_UI
+    def track_mouse_location(self):#TRANSFERRED
         #new_VALS
         #verified
         self.main_window_x_location_SCREEN: int = self.main_window.winfo_rootx()
@@ -508,28 +505,28 @@ class DisplayEnvironment():
         self.canvas_mouse_location_y: int = self.display_frame_mouse_location_y - self.canvas_y_placement
 
 
-    def move_display_frame_up(self):#FOR-GAME_ENVIRONMENT_UI
+    def move_display_frame_up(self):#TRANSFERRED
         self.canvas_y_placement-=5
-    def move_display_frame_up_right(self):#FOR-GAME_ENVIRONMENT_UI
+    def move_display_frame_up_right(self):#TRANSFERRED
         self.canvas_y_placement-=5
         self.canvas_x_placement+=5
-    def move_display_frame_up_left(self):#FOR-GAME_ENVIRONMENT_UI
+    def move_display_frame_up_left(self):#TRANSFERRED
         self.canvas_y_placement-=5
         self.canvas_x_placement-=5
-    def move_display_frame_left(self):#FOR-GAME_ENVIRONMENT_UI
+    def move_display_frame_left(self):#TRANSFERRED
         self.canvas_x_placement-=5
-    def move_display_frame_right(self):#FOR-GAME_ENVIRONMENT_UI
+    def move_display_frame_right(self):#TRANSFERRED
         self.canvas_x_placement+=5
-    def move_display_frame_down(self):#FOR-GAME_ENVIRONMENT_UI
+    def move_display_frame_down(self):#TRANSFERRED
         self.canvas_y_placement+=5
-    def move_display_frame_down_right(self):#FOR-GAME_ENVIRONMENT_UI
+    def move_display_frame_down_right(self):#TRANSFERRED
         self.canvas_y_placement+=5
         self.canvas_x_placement+=5
-    def move_display_frame_down_left(self):#FOR-GAME_ENVIRONMENT_UI
+    def move_display_frame_down_left(self):#TRANSFERRED
         self.canvas_y_placement+=5
         self.canvas_x_placement-=5
 
-    def set_unit_selector_origin(self):#FOR-GAME_ENVIRONMENT_UI
+    def set_unit_selector_origin(self):#TRANSFERRED
         origin_on_unit: bool = False
         selecting_entity: ce.Entity
 
@@ -550,15 +547,15 @@ class DisplayEnvironment():
         else:
             self.enable_unit_selector()
 
-    def select_entity(self, entity):#FOR-GAME_ENVIRONMENT_UI
+    def select_entity(self, entity):#TRANSFERRED
         self.game_environment.all_entities.add_to_selected_entities(entity)
 
-    def enable_unit_selector(self):#FOR-GAME_ENVIRONMENT_UI
+    def enable_unit_selector(self):#TRANSFERRED
         self.unit_selector_enabled = True
         self.motion_selection_aabb.x1 = self.origin_x
         self.motion_selection_aabb.y1 = self.origin_y
 
-    def make_selection(self):#FOR-GAME_ENVIRONMENT_UI
+    def make_selection(self):#TRANSFERRED
         #clear-selected-entities-first
         self.game_environment.all_entities.remove_all_selected_entities()
         for entity in self.game_environment.all_entities.all:
@@ -567,14 +564,14 @@ class DisplayEnvironment():
                     self.game_environment.all_entities.add_to_selected_entities(entity)
 
     #MOVING
-    def enable_track_entity_attack_ranges(self):#FOR-GAME_ENVIRONMENT_UI
+    def enable_track_entity_attack_ranges(self):#TRANSFERRED
         self.track_entity_attack_ranges_enabled: bool = True
 
-    def update_canvas_frame_placement(self):#FOR-GAME_ENVIRONMENT_UI
+    def update_canvas_frame_placement(self):#TRANSFERRED
         self.canvas.place(x=self.canvas_x_placement,y=self.canvas_y_placement)
 
     #CLEANTHISUPUPONREFACTOR
-    def lock_cursor_to_frame(self):#FOR-GAME_ENVIRONMENT_UI
+    def lock_cursor_to_frame(self):#TRANSFERRED
         if self.mouse_border_monitoring == True:
             self.mouse_border_monitoring = False
         else:
@@ -584,14 +581,14 @@ class DisplayEnvironment():
             else:
                 print("Mouse not in display frame")
 
-    def display_frame_point_get_screen_xy(self, x: float, y: float):#FOR-GAME_ENVIRONMENT_UI
+    def display_frame_point_get_screen_xy(self, x: float, y: float):#TRANSFERRED
         new_windows_x = x + self.display_frame_main_window_offset + self.main_window_x_location_SCREEN
         new_windows_y = y + self.display_frame_main_window_offset + self.main_window_y_location_SCREEN
         return (new_windows_x, new_windows_y)
 
     #intotal-restricts-mouse-to-display-frame-and-scrolls-display-frame-dependent-on-scroll-speed
     #plan->for-update-to-only-allow-movement-within-game-environment-frame
-    def restrict_mouse_within_display_area(self):#FOR-GAME_ENVIRONMENT_UI
+    def restrict_mouse_within_display_area(self):#TRANSFERRED
         if self.mouse_border_monitoring:
             if self.display_frame_aabb.check_xy_in_aabb(self.display_frame_mouse_location_point[0], self.display_frame_mouse_location_point[1]):
                 print("INSIDE_FRAME")
@@ -643,7 +640,7 @@ class DisplayEnvironment():
         else:
             pass
 
-    def button_release_checks(self):#FOR-GAME_ENVIRONMENT_UI
+    def button_release_checks(self):#TRANSFERRED
         if self.unit_selector_enabled:
             self.unit_selector_enabled = False
             self.destination_x = self.canvas_mouse_location_x
@@ -660,7 +657,7 @@ class DisplayEnvironment():
 
             self.make_selection()
 
-    def draw_unit_selector(self):#FOR-GAME_ENVIRONMENT_UI
+    def draw_unit_selector(self):#TRANSFERRED
         #current_destination_x = self.get_mouse_x_location()
         current_destination_x = self.canvas_mouse_location_x
         #current_destination_y = self.get_mouse_y_location()
@@ -670,22 +667,22 @@ class DisplayEnvironment():
     def run_main_window(self):#TRANSFERRED
         self.main_window.mainloop()
 
-    def highlight_selected_entities(self):#FOR-GAME_ENVIRONMENT_UI
+    def highlight_selected_entities(self):#TRANSFERRED
         for entity in self.game_environment.all_entities.selected:
             self.canvas.create_rectangle(entity.aabb.x1, entity.aabb.y1, entity.aabb.x2, entity.aabb.y2, outline='red', width=2)
 
-    def display_entity(self, entity: ce.Entity):#FOR-GAME_ENVIRONMENT_UI
+    def display_entity(self, entity: ce.Entity):#TRANSFERRED
         self.canvas.create_image(entity.pos.x, entity.pos.y, image=entity.img, anchor=tk.NW)
 
-    def display_laser_shot(self, laser_shot: ls.LaserShot):#FOR-GAME_ENVIRONMENT_UI
+    def display_laser_shot(self, laser_shot: ls.LaserShot):#TRANSFERRED
         #print('displaying-laser-shot')
         self.canvas.create_line(laser_shot.laser_pulse_beginning_point_vec.x, laser_shot.laser_pulse_beginning_point_vec.y, laser_shot.laser_pulse_end_point_vec.x, laser_shot.laser_pulse_end_point_vec.y, fill=laser_shot.laser_pulse_color, width=laser_shot.laser_pulse_width)
 
-    def display_building(self, building):#FOR-GAME_ENVIRONMENT_UI
+    def display_building(self, building):#TRANSFERRED
         self.canvas.create_image(building.x, building.y, image=building.img, anchor=tk.NW)
 
     #UPDATE-AFTER-REFACTOR
-    def display_all_elements(self):#FOR-GAME_ENVIRONMENT_UI
+    def display_all_elements(self):#TRANSFERRED
         if self.unit_selector_enabled:
             self.draw_unit_selector()
         for entity in self.game_environment.all_entities.all:
@@ -701,7 +698,7 @@ class DisplayEnvironment():
 
             #print('displaying LASER SHOT')
 
-    def tick(self):#FOR-GAME_ENVIRONMENT_UI
+    def tick(self):#TRANSFERRED
         #self.main_window.after(60, self.tick)
         if self.display_environment_tick_enabled:
             self.canvas.delete('all')

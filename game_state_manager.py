@@ -73,6 +73,9 @@ class GameStateManager():
     def run_main_window(self):
         self.main_window.mainloop()
 
+    def get_main_window(self):
+        return self.main_window
+
     def swap_to_start_screen_ui(self):
         if self.all_uis.all[self.main_menu_screen_ui_name]:
             self.all_uis.all[self.main_menu_screen_ui_name].unload_main_menu_screen_ui()
